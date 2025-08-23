@@ -1,0 +1,30 @@
+---
+title: "첫 번째 블로그 포스트"
+date: "2024-01-01"
+excerpt: "Next.js와 TypeScript로 만든 블로그의 첫 번째 포스트입니다."
+tags: ["Next.js", "TypeScript", "블로그"]
+author: "Blog Author"
+---
+
+# 안녕하세요!
+
+이것은 **첫 번째 블로그 포스트**입니다.
+
+## 기능 소개
+
+이 블로그는 다음과 같은 기능을 제공합니다:
+
+- 마크다운 지원
+- 타입스크립트 안정성
+- 반응형 디자인
+- 다크모드 지원 (곧 추가될 예정)
+
+### 코드 예시
+
+```javascript
+function hello() {
+  console.log("Hello, World!");
+}
+```
+
+더 많은 포스트가 곧 업데이트될 예정입니다!
