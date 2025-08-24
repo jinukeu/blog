@@ -45,24 +45,24 @@ export default async function BlogPost({ params }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-black dark:to-blue-950">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 dark:bg-black/80 border-b border-black/[0.06] dark:border-white/[0.08]">
-        <div className="max-w-4xl mx-auto px-6 lg:px-8">
+    <div className="min-h-screen bg-neutral-50">
+      {/* Toss 스타일 내비게이션 */}
+      <nav className="bg-white shadow-card sticky top-0 z-50 backdrop-blur-sm bg-white/95">
+        <div className="max-w-4xl mx-auto px-6">
           <div className="flex justify-between items-center h-16">
-            <Link href="/" className="text-2xl font-bold text-black dark:text-white tracking-tight">
+            <Link href="/" className="text-xl font-bold text-neutral-900 hover:text-primary-500 transition-colors">
               Modern Blog
             </Link>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center space-x-6">
               <Link 
                 href="/blog" 
-                className="text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white font-medium transition-colors duration-200"
+                className="text-neutral-600 hover:text-primary-500 font-medium transition-colors"
               >
                 모든 글
               </Link>
               <Link 
                 href="/" 
-                className="text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white font-medium transition-colors duration-200"
+                className="text-neutral-600 hover:text-primary-500 font-medium transition-colors"
               >
                 홈으로
               </Link>
@@ -71,12 +71,12 @@ export default async function BlogPost({ params }: Props) {
         </div>
       </nav>
 
-      <main className="max-w-4xl mx-auto px-6 lg:px-8 py-12">
-        {/* Back Button */}
-        <div className="mb-8">
+      <main className="max-w-4xl mx-auto px-6 py-16">
+        {/* Toss 스타일 백 버튼 */}
+        <div className="mb-12">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-black/70 dark:text-white/70 hover:text-black dark:hover:text-white font-medium transition-colors duration-200"
+            className="inline-flex items-center gap-2 text-neutral-600 hover:text-primary-500 font-medium transition-colors duration-200"
           >
             <svg
               className="w-4 h-4"
@@ -96,13 +96,13 @@ export default async function BlogPost({ params }: Props) {
         </div>
 
         <article>
-          {/* Article Header */}
-          <header className="mb-12">
-            <h1 className="text-4xl lg:text-5xl font-bold text-black dark:text-white mb-6 tracking-tight leading-tight">
+          {/* Toss 스타일 아티클 헤더 */}
+          <header className="mb-16">
+            <h1 className="text-5xl lg:text-6xl font-bold text-neutral-900 mb-8 leading-tight">
               {post.title}
             </h1>
             
-            <div className="flex flex-wrap items-center gap-4 text-black/60 dark:text-white/60 mb-6">
+            <div className="flex flex-wrap items-center gap-4 text-neutral-500 mb-8">
               <time dateTime={post.date} className="font-medium">
                 {new Date(post.date).toLocaleDateString('ko-KR', {
                   year: 'numeric',
@@ -112,13 +112,13 @@ export default async function BlogPost({ params }: Props) {
               </time>
               {post.author && (
                 <>
-                  <span className="text-black/30 dark:text-white/30">•</span>
+                  <span className="text-neutral-300">•</span>
                   <span className="font-medium">{post.author}</span>
                 </>
               )}
               {post.readTime && (
                 <>
-                  <span className="text-black/30 dark:text-white/30">•</span>
+                  <span className="text-neutral-300">•</span>
                   <span className="font-medium">{post.readTime}</span>
                 </>
               )}
@@ -129,7 +129,7 @@ export default async function BlogPost({ params }: Props) {
                 {post.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-3 py-1.5 text-sm font-medium bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-full border border-blue-100 dark:border-blue-800/30"
+                    className="px-3 py-1.5 text-sm font-medium bg-primary-50 text-primary-700 rounded-full"
                   >
                     {tag}
                   </span>
@@ -138,21 +138,21 @@ export default async function BlogPost({ params }: Props) {
             )}
           </header>
 
-          {/* Article Content */}
-          <div className="bg-white/50 dark:bg-white/[0.02] backdrop-blur-sm border border-black/[0.06] dark:border-white/[0.08] rounded-2xl p-8 lg:p-12">
+          {/* Toss 스타일 아티클 콘텐츠 */}
+          <div className="bg-white rounded-xl shadow-card p-8 lg:p-12">
             <div
-              className="prose prose-lg max-w-none prose-headings:text-black dark:prose-headings:text-white prose-p:text-black/80 dark:prose-p:text-white/80 prose-strong:text-black dark:prose-strong:text-white prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:text-blue-700 dark:hover:prose-a:text-blue-300 prose-code:bg-black/5 dark:prose-code:bg-white/10 prose-code:text-black dark:prose-code:text-white prose-code:rounded prose-code:px-1 prose-code:py-0.5 prose-pre:bg-black/5 dark:prose-pre:bg-white/5 prose-pre:border prose-pre:border-black/10 dark:prose-pre:border-white/10 prose-pre:rounded-xl prose-blockquote:border-l-blue-600 dark:prose-blockquote:border-l-blue-400 prose-blockquote:text-black/70 dark:prose-blockquote:text-white/70 prose-li:text-black/80 dark:prose-li:text-white/80"
+              className="prose prose-lg max-w-none prose-headings:text-neutral-900 prose-p:text-neutral-700 prose-strong:text-neutral-900 prose-a:text-primary-500 hover:prose-a:text-primary-600 prose-code:bg-neutral-100 prose-code:text-neutral-800 prose-code:rounded prose-code:px-2 prose-code:py-0.5 prose-pre:bg-neutral-100 prose-pre:border prose-pre:border-neutral-200 prose-pre:rounded-xl prose-blockquote:border-l-primary-500 prose-blockquote:text-neutral-600 prose-li:text-neutral-700"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
           </div>
         </article>
 
-        {/* Navigation */}
-        <div className="mt-12 pt-8 border-t border-black/[0.06] dark:border-white/[0.08]">
+        {/* Toss 스타일 내비게이션 */}
+        <div className="mt-16 pt-8 border-t border-neutral-200">
           <div className="flex flex-col sm:flex-row gap-4 justify-between">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white/50 dark:bg-white/[0.02] border border-black/[0.06] dark:border-white/[0.08] text-black dark:text-white rounded-xl font-semibold hover:bg-white/80 dark:hover:bg-white/[0.04] hover:border-black/[0.12] dark:hover:border-white/[0.16] transition-all duration-300"
+              className="inline-flex items-center gap-2 px-6 py-3 border border-neutral-200 text-neutral-700 rounded-xl font-semibold hover:bg-neutral-50 transition-all duration-200 hover:shadow-card hover:-translate-y-0.5"
             >
               <svg
                 className="w-4 h-4"
@@ -172,7 +172,7 @@ export default async function BlogPost({ params }: Props) {
             
             <Link
               href="/"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white rounded-xl font-semibold hover:bg-blue-700 dark:hover:bg-blue-600 transition-all duration-300"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary-500 text-white rounded-xl font-semibold hover:bg-primary-600 transition-all duration-200 hover:shadow-soft hover:-translate-y-0.5"
             >
               홈으로 가기
               <svg
@@ -193,18 +193,18 @@ export default async function BlogPost({ params }: Props) {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-black/[0.06] dark:border-white/[0.08] bg-white/30 dark:bg-white/[0.02] backdrop-blur-sm mt-20">
-        <div className="max-w-4xl mx-auto px-6 lg:px-8 py-12">
+      {/* Toss 스타일 푸터 */}
+      <footer className="bg-white border-t border-neutral-100 mt-20">
+        <div className="max-w-4xl mx-auto px-6 py-12">
           <div className="text-center">
-            <h3 className="text-2xl font-bold text-black dark:text-white mb-4">
+            <h3 className="text-xl font-bold text-neutral-900 mb-4">
               Modern Blog
             </h3>
-            <p className="text-black/70 dark:text-white/70 mb-6 max-w-md mx-auto">
+            <p className="text-neutral-600 mb-6 max-w-md mx-auto leading-relaxed">
               현대적인 디자인과 깔끔한 사용자 경험을 제공하는 개발 블로그
             </p>
-            <div className="text-sm text-black/50 dark:text-white/50">
-              © 2024 Modern Blog. Made with Next.js and ❤️
+            <div className="text-sm text-neutral-500 font-medium">
+              © 2024 Modern Blog. Made with Next.js
             </div>
           </div>
         </div>

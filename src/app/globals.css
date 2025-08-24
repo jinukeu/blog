@@ -33,7 +33,7 @@ html {
 
 /* Enhanced focus styles for accessibility */
 *:focus-visible {
-  outline: 2px solid #3b82f6;
+  outline: 2px solid #10b981;
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -47,4 +47,79 @@ html {
 .backdrop-blur-sm {
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+}
+
+/* Toss-style animations and interactions */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.4s ease-out;
+}
+
+/* Enhanced hover animations */
+.hover-lift {
+  transition: all 0.2s ease-out;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15);
+}
+
+/* Modern gradient backgrounds */
+.gradient-bg {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.gradient-border {
+  background: linear-gradient(135deg, #10b981, #059669);
+  padding: 2px;
+  border-radius: 12px;
+}
+
+.gradient-border > * {
+  background: white;
+  border-radius: 10px;
+}
+
+/* Smooth transitions for all elements */
+* {
+  transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
 }

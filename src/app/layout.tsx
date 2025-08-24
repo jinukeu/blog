@@ -45,8 +45,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning>
+      <head>
+        <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css" rel="stylesheet" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        style={{ fontFamily: "'SUIT Variable', sans-serif" }}
       >
         <ThemeProvider
           attribute="class"
