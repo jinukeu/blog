@@ -15,25 +15,25 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Modern Blog",
-    template: "%s | Modern Blog",
+    default: "Jinukeu Blog",
+    template: "%s | Jinukeu Blog",
   },
   description: "현대적이고 트렌디한 개발 블로그입니다.",
   keywords: ["블로그", "개발", "웹개발", "Next.js", "TypeScript"],
-  authors: [{ name: "Blog Author" }],
-  creator: "Blog Author",
+  authors: [{ name: "이진욱" }],
+  creator: "이진욱",
   metadataBase: new URL("https://yourdomain.com"),
   openGraph: {
     type: "website",
     locale: "ko_KR",
     url: "https://yourdomain.com",
-    title: "Modern Blog",
+    title: "Jinukeu Blog",
     description: "현대적이고 트렌디한 개발 블로그입니다.",
-    siteName: "Modern Blog",
+    siteName: "Jinukeu Blog",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Modern Blog",
+    title: "Jinukeu Blog",
     description: "현대적이고 트렌디한 개발 블로그입니다.",
   },
 };

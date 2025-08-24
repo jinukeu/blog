@@ -7,6 +7,7 @@ export interface BlogPost {
   tags?: string[];
   author?: string;
   readTime?: string;
+  thumbnail?: string;
 }
 
 export interface BlogPostMeta {
@@ -15,4 +16,5 @@ export interface BlogPostMeta {
   excerpt: string;
   tags?: string[];
   author?: string;
+  thumbnail?: string;
 }

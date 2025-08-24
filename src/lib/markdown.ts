@@ -24,6 +24,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost> {
     tags: data.tags,
     author: data.author,
     readTime: data.readTime,
+    thumbnail: data.thumbnail,
   };
 }
 
@@ -44,6 +45,7 @@ export function getAllPosts(): (BlogPostMeta & { slug: string })[] {
         excerpt: data.excerpt,
         tags: data.tags,
         author: data.author,
+        thumbnail: data.thumbnail,
       };
     });
 

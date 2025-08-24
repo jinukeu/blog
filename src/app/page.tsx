@@ -57,8 +57,16 @@ export default async function Home() {
                 <Link href={`/blog/${post.slug}`}>
                   <div className="bg-white hover:bg-neutral-50 transition-all duration-200">
                     {/* 썸네일 이미지 */}
-                    <div className="w-full h-48 bg-gradient-to-br from-primary-100 to-primary-200 rounded-lg mb-4 flex items-center justify-center">
-                      <div className="text-4xl">🧩</div>
+                    <div className="w-full h-48 bg-gradient-to-br from-primary-100 to-primary-200 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                      {post.thumbnail ? (
+                        <img 
+                          src={post.thumbnail} 
+                          alt={post.title}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="text-4xl">🧩</div>
+                      )}
                     </div>
                     
                     {/* 콘텐츠 */}
@@ -72,7 +80,7 @@ export default async function Home() {
                       </p>
                       
                       <div className="flex items-center justify-between text-xs text-neutral-400">
-                        <span>{post.author || 'Jinukeu'}</span>
+                        <span>{post.author || '이진욱'}</span>
                         <time dateTime={post.date}>
                           {new Date(post.date).toLocaleDateString('ko-KR', {
                             month: 'long',
