@@ -14,16 +14,16 @@ export default async function Home() {
               <span className="text-2xl font-bold text-neutral-900">Jinukeu Blog</span>
             </Link>
             <nav className="flex items-center space-x-8">
-              <Link href="/blog" className="text-neutral-700 hover:text-primary-500 font-medium text-sm transition-colors">
+              <Link href="/" className="text-neutral-700 hover:text-primary-500 font-medium text-sm transition-colors">
                 전체
               </Link>
-              <Link href="/blog" className="text-neutral-700 hover:text-primary-500 font-medium text-sm transition-colors">
+              <Link href="/" className="text-neutral-700 hover:text-primary-500 font-medium text-sm transition-colors">
                 개발
               </Link>
-              <Link href="/blog" className="text-neutral-700 hover:text-primary-500 font-medium text-sm transition-colors">
+              <Link href="/" className="text-neutral-700 hover:text-primary-500 font-medium text-sm transition-colors">
                 디자인
               </Link>
-              <Link href="/blog" className="text-neutral-700 hover:text-primary-500 font-medium text-sm transition-colors">
+              <Link href="/" className="text-neutral-700 hover:text-primary-500 font-medium text-sm transition-colors">
                 비즈니스
               </Link>
             </nav>
@@ -58,7 +58,7 @@ export default async function Home() {
                   <div className="bg-white hover:bg-neutral-50 transition-all duration-200">
                     {/* 썸네일 이미지 */}
                     <div className="w-full h-48 bg-gradient-to-br from-primary-100 to-primary-200 rounded-lg mb-4 flex items-center justify-center">
-                      <div className="text-4xl">📝</div>
+                      <div className="text-4xl">🧩</div>
                     </div>
                     
                     {/* 콘텐츠 */}
@@ -124,9 +124,9 @@ export default async function Home() {
             <div>
               <h4 className="font-medium text-neutral-900 mb-3">콘텐츠</h4>
               <ul className="space-y-2 text-sm text-neutral-600">
-                <li><Link href="/blog" className="hover:text-primary-500">전체 글</Link></li>
-                <li><Link href="/blog" className="hover:text-primary-500">개발</Link></li>
-                <li><Link href="/blog" className="hover:text-primary-500">디자인</Link></li>
+                <li><Link href="/" className="hover:text-primary-500">전체 글</Link></li>
+                <li><Link href="/" className="hover:text-primary-500">개발</Link></li>
+                <li><Link href="/" className="hover:text-primary-500">디자인</Link></li>
               </ul>
             </div>
             <div>
