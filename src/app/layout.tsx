@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LoadingBar } from "@/components/LoadingBar";
 import { Suspense } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -61,6 +62,7 @@ export default function RootLayout({
             <LoadingBar />
           </Suspense>
           {children}
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>

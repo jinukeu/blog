@@ -194,9 +194,9 @@ export default function Home() {
               <article key={post.slug} className="group">
                 <Link href={`/blog/${post.slug}`}>
                   <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-                    <div className="flex gap-6 p-6">
+                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 p-4 sm:p-6">
                       {/* 썸네일 이미지 */}
-                      <div className="w-48 h-32 flex-shrink-0 bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900 dark:to-emerald-800 rounded-lg flex items-center justify-center overflow-hidden">
+                      <div className="w-full sm:w-48 h-48 sm:h-32 flex-shrink-0 bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900 dark:to-emerald-800 rounded-lg flex items-center justify-center overflow-hidden">
                         {post.thumbnail ? (
                           <img
                             src={post.thumbnail}
@@ -211,7 +211,7 @@ export default function Home() {
                       {/* 콘텐츠 */}
                       <div className="flex-1 flex flex-col justify-between min-w-0">
                         <div className="space-y-2">
-                          <h2 className="text-xl font-bold text-neutral-900 dark:text-white group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors line-clamp-2 leading-tight">
+                          <h2 className="text-lg sm:text-xl font-bold text-neutral-900 dark:text-white group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors line-clamp-2 leading-tight">
                             {post.title}
                           </h2>
 
@@ -221,9 +221,9 @@ export default function Home() {
                         </div>
 
                         <div className="space-y-3 mt-4">
-                          <div className="flex items-center gap-3 text-xs text-neutral-400 dark:text-gray-500">
+                          <div className="flex items-center gap-2 sm:gap-3 text-xs text-neutral-400 dark:text-gray-500 flex-wrap">
                             <span>{post.author || '이진욱'}</span>
-                            <span>•</span>
+                            <span className="hidden sm:inline">•</span>
                             <time dateTime={post.date}>
                               {new Date(post.date).toLocaleDateString('ko-KR', {
                                 year: 'numeric',
@@ -233,7 +233,7 @@ export default function Home() {
                             </time>
                             {post.readTime && (
                               <>
-                                <span>•</span>
+                                <span className="hidden sm:inline">•</span>
                                 <span>{post.readTime}</span>
                               </>
                             )}
@@ -246,7 +246,7 @@ export default function Home() {
                                 return category ? (
                                   <span
                                     key={catId}
-                                    className="px-4 py-1.5 text-xs font-semibold bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-lg"
+                                    className="px-3 sm:px-4 py-1 sm:py-1.5 text-xs font-semibold bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-lg"
                                   >
                                     {category.name}
                                   </span>
@@ -257,7 +257,7 @@ export default function Home() {
                                 return category ? (
                                   <span
                                     key={catId}
-                                    className="px-4 py-1.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg"
+                                    className="px-3 sm:px-4 py-1 sm:py-1.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg"
                                   >
                                     {category.name}
                                   </span>
