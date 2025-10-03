@@ -48,8 +48,8 @@ export default function BlogPost() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
-        <p className="text-neutral-600 dark:text-gray-400">로딩 중...</p>
+      <div className="min-h-screen bg-white dark:bg-gray-900">
+        {/* 로딩 상태 - 빈 페이지로 유지 */}
       </div>
     );
   }

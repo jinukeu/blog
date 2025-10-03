@@ -114,7 +114,7 @@ export function CategorySelector({
   };
 
   if (loading) {
-    return <div className="text-neutral-600 dark:text-gray-400">카테고리 로딩 중...</div>;
+    return <div className="py-4">{/* 로딩 상태 - 빈 공간으로 유지 */}</div>;
   }
 
   return (

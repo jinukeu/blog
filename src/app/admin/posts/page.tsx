@@ -87,7 +87,7 @@ export default function PostsPage() {
 
         {loading ? (
           <div className="text-center py-20">
-            <p className="text-neutral-600 dark:text-gray-400">로딩 중...</p>
+            {/* 로딩 상태 - 빈 공간으로 유지 */}
           </div>
         ) : posts.length > 0 ? (
           <div className="space-y-4">

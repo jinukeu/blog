@@ -189,7 +189,7 @@ export default function CategoriesPage() {
 
         {loading ? (
           <div className="text-center py-20">
-            <p className="text-neutral-600 dark:text-gray-400">로딩 중...</p>
+            {/* 로딩 상태 - 빈 공간으로 유지 */}
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
