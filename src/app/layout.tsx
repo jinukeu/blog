@@ -16,10 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: {
     default: "Jinukeu Blog",
-    template: "%s | Jinukeu Blog",
+    template: "%s | Jinukeu Blog,"
   },
-  description: "현대적이고 트렌디한 개발 블로그입니다.",
-  keywords: ["블로그", "개발", "웹개발", "Next.js", "TypeScript"],
+  keywords: ["블로그", "개발", "안드로이드", "Android", "Kotlin", "Java", "모바일"],
   authors: [{ name: "이진욱" }],
   creator: "이진욱",
   metadataBase: new URL("https://yourdomain.com"),
@@ -28,13 +27,11 @@ export const metadata: Metadata = {
     locale: "ko_KR",
     url: "https://yourdomain.com",
     title: "Jinukeu Blog",
-    description: "현대적이고 트렌디한 개발 블로그입니다.",
     siteName: "Jinukeu Blog",
   },
   twitter: {
     card: "summary_large_image",
     title: "Jinukeu Blog",
-    description: "현대적이고 트렌디한 개발 블로그입니다.",
   },
 };
 
