@@ -13,6 +13,7 @@ interface Post {
   mainCategories?: string[];
   subCategories?: string[];
   author?: string;
+  readTime?: string;
   thumbnail?: string;
 }
 
