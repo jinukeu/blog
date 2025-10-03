@@ -6,6 +6,7 @@ import html from 'remark-html';
 import { BlogPost, BlogPostMeta } from '@/types/blog';
 
 const postsDirectory = path.join(process.cwd(), 'posts');
+const postImagesDirectory = path.join(process.cwd(), 'public', 'images', 'posts');
 
 export async function getPostBySlug(slug: string): Promise<BlogPost> {
   const fullPath = path.join(postsDirectory, `${slug}.md`);
@@ -21,7 +22,8 @@ export async function getPostBySlug(slug: string): Promise<BlogPost> {
     date: data.date,
     excerpt: data.excerpt,
     content: contentHtml,
-    tags: data.tags,
+    mainCategories: data.mainCategories,
+    subCategories: data.subCategories,
     author: data.author,
     readTime: data.readTime,
     thumbnail: data.thumbnail,
@@ -43,13 +45,38 @@ export function getAllPosts(): (BlogPostMeta & { slug: string })[] {
         title: data.title,
         date: data.date,
         excerpt: data.excerpt,
-        tags: data.tags,
+        mainCategories: data.mainCategories,
+        subCategories: data.subCategories,
         author: data.author,
         thumbnail: data.thumbnail,
       };
     });
 
   return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1));
+}
+
+export function getPostContent(slug: string): { content: string; frontmatter: Record<string, unknown> } {
+  const fullPath = path.join(postsDirectory, `${slug}.md`);
+  const fileContents = fs.readFileSync(fullPath, 'utf8');
+  const { data, content } = matter(fileContents);
+
+  return {
+    content,
+    frontmatter: data,
+  };
+}
+
+export function savePost(slug: string, content: string, frontmatter: Record<string, unknown>): void {
+  const fullPath = path.join(postsDirectory, `${slug}.md`);
+  const fileContent = matter.stringify(content, frontmatter);
+  fs.writeFileSync(fullPath, fileContent, 'utf8');
+}
+
+export function deletePost(slug: string): void {
+  const fullPath = path.join(postsDirectory, `${slug}.md`);
+  if (fs.existsSync(fullPath)) {
+    fs.unlinkSync(fullPath);
+  }
 }
 
 export function getAllSlugs() {

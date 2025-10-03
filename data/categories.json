@@ -1,0 +1,36 @@
+{
+  "mainCategories": [
+    {
+      "id": "recommended",
+      "name": "추천",
+      "slug": "recommended"
+    },
+    {
+      "id": "dev",
+      "name": "개발",
+      "slug": "dev"
+    },
+    {
+      "id": "life",
+      "name": "일상",
+      "slug": "life"
+    }
+  ],
+  "subCategories": [
+    {
+      "id": "web",
+      "name": "웹개발",
+      "slug": "web"
+    },
+    {
+      "id": "tips",
+      "name": "팁",
+      "slug": "tips"
+    },
+    {
+      "id": "frontend",
+      "name": "프론트엔드",
+      "slug": "frontend"
+    }
+  ]
+}

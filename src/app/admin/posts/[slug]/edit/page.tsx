@@ -11,7 +11,7 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export default function EditDraftPage({ params }: PageProps) {
+export default function EditPostPage({ params }: PageProps) {
   const router = useRouter();
   const resolvedParams = use(params);
   const { slug } = resolvedParams;
@@ -25,15 +25,15 @@ export default function EditDraftPage({ params }: PageProps) {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    fetchDraft();
+    fetchPost();
   }, [slug]);
 
-  const fetchDraft = async () => {
+  const fetchPost = async () => {
     try {
-      const response = await fetch(`/api/drafts/${slug}`);
+      const response = await fetch(`/api/posts/${slug}`);
       if (!response.ok) {
-        alert('Draft를 찾을 수 없습니다.');
-        router.push('/admin/drafts');
+        alert('글을 찾을 수 없습니다.');
+        router.push('/admin/posts');
         return;
       }
 
@@ -44,8 +44,8 @@ export default function EditDraftPage({ params }: PageProps) {
       setSubCategories(data.frontmatter.subCategories || []);
       setContent(data.content || '');
     } catch (error) {
-      console.error('Error fetching draft:', error);
-      alert('Draft를 불러오는 중 오류가 발생했습니다.');
+      console.error('Error fetching post:', error);
+      alert('글을 불러오는 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
     }
@@ -79,7 +79,7 @@ export default function EditDraftPage({ params }: PageProps) {
         author: '이진욱',
       };
 
-      const response = await fetch(`/api/drafts/${slug}`, {
+      const response = await fetch(`/api/posts/${slug}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -91,13 +91,13 @@ export default function EditDraftPage({ params }: PageProps) {
       });
 
       if (response.ok) {
-        router.push('/admin/drafts');
+        router.push('/admin/posts');
       } else {
-        alert('Draft 저장에 실패했습니다.');
+        alert('글 저장에 실패했습니다.');
       }
     } catch (error) {
-      console.error('Error saving draft:', error);
-      alert('Draft 저장 중 오류가 발생했습니다.');
+      console.error('Error saving post:', error);
+      alert('글 저장 중 오류가 발생했습니다.');
     } finally {
       setSaving(false);
     }
@@ -122,12 +122,12 @@ export default function EditDraftPage({ params }: PageProps) {
                 jinukeu.log
               </Link>
               <span className="text-neutral-400 dark:text-gray-600">|</span>
-              <span className="text-neutral-600 dark:text-gray-400">Draft 편집</span>
+              <span className="text-neutral-600 dark:text-gray-400">발행된 글 편집</span>
             </div>
             <div className="flex items-center gap-4">
               <ThemeToggle />
               <Link
-                href="/admin/drafts"
+                href="/admin/posts"
                 className="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-gray-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
               >
                 취소

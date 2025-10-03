@@ -1,10 +1,22 @@
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+export interface CategoriesData {
+  mainCategories: Category[];
+  subCategories: Category[];
+}
+
 export interface BlogPost {
   slug: string;
   title: string;
   date: string;
   excerpt: string;
   content: string;
-  tags?: string[];
+  mainCategories?: string[];
+  subCategories?: string[];
   author?: string;
   readTime?: string;
   thumbnail?: string;
@@ -14,7 +26,8 @@ export interface BlogPostMeta {
   title: string;
   date: string;
   excerpt: string;
-  tags?: string[];
+  mainCategories?: string[];
+  subCategories?: string[];
   author?: string;
   readTime?: string;
   thumbnail?: string;
@@ -26,7 +39,8 @@ export interface DraftPost {
   date: string;
   excerpt: string;
   content: string;
-  tags?: string[];
+  mainCategories?: string[];
+  subCategories?: string[];
   author?: string;
   readTime?: string;
   thumbnail?: string;
@@ -37,7 +51,8 @@ export interface DraftPostMeta {
   title: string;
   date: string;
   excerpt: string;
-  tags?: string[];
+  mainCategories?: string[];
+  subCategories?: string[];
   author?: string;
   readTime?: string;
   thumbnail?: string;

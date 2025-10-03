@@ -4,71 +4,52 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
-interface Draft {
+interface Post {
   slug: string;
   title: string;
   date: string;
   excerpt: string;
-  tags?: string[];
-  updatedAt?: string;
+  mainCategories?: string[];
+  subCategories?: string[];
 }
 
-export default function DraftsPage() {
-  const [drafts, setDrafts] = useState<Draft[]>([]);
+export default function PostsPage() {
+  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchDrafts();
+    fetchPosts();
   }, []);
 
-  const fetchDrafts = async () => {
+  const fetchPosts = async () => {
     try {
-      const response = await fetch('/api/drafts');
+      const response = await fetch('/api/posts');
       const data = await response.json();
-      setDrafts(data);
+      setPosts(data);
     } catch (error) {
-      console.error('Error fetching drafts:', error);
+      console.error('Error fetching posts:', error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (slug: string) => {
-    if (!confirm('정말로 이 Draft를 삭제하시겠습니까?')) return;
+    if (!confirm('정말로 이 글을 삭제하시겠습니까?')) return;
 
     try {
-      const response = await fetch(`/api/drafts/${slug}`, {
+      const response = await fetch(`/api/posts/${slug}`, {
         method: 'DELETE',
       });
 
       if (response.ok) {
-        fetchDrafts();
+        fetchPosts();
+        alert('글이 삭제되었습니다.');
       } else {
-        alert('Draft 삭제에 실패했습니다.');
+        alert('글 삭제에 실패했습니다.');
       }
     } catch (error) {
-      console.error('Error deleting draft:', error);
-      alert('Draft 삭제 중 오류가 발생했습니다.');
-    }
-  };
-
-  const handlePublish = async (slug: string) => {
-    if (!confirm('이 Draft를 발행하시겠습니까?')) return;
-
-    try {
-      const response = await fetch(`/api/drafts/${slug}/publish`, {
-        method: 'POST',
-      });
-
-      if (response.ok) {
-        alert('Draft가 성공적으로 발행되었습니다!');
-        fetchDrafts();
-      } else {
-        alert('Draft 발행에 실패했습니다.');
-      }
-    } catch (error) {
-      console.error('Error publishing draft:', error);
-      alert('Draft 발행 중 오류가 발생했습니다.');
+      console.error('Error deleting post:', error);
+      alert('글 삭제 중 오류가 발생했습니다.');
     }
   };
 
@@ -83,9 +64,17 @@ export default function DraftsPage() {
                 jinukeu.log
               </Link>
               <span className="text-neutral-400 dark:text-gray-600">|</span>
-              <span className="text-neutral-600 dark:text-gray-400">Draft 관리</span>
+              <span className="text-neutral-600 dark:text-gray-400">발행된 글 관리</span>
             </div>
-            <ThemeToggle />
+            <div className="flex items-center gap-4">
+              <Link
+                href="/admin/drafts"
+                className="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-gray-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
+              >
+                Draft 관리
+              </Link>
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </header>
@@ -93,65 +82,47 @@ export default function DraftsPage() {
       {/* 메인 콘텐츠 */}
       <main className="max-w-[1200px] mx-auto px-6 py-8">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-neutral-900 dark:text-white">Draft 목록</h1>
-          <div className="flex items-center gap-3">
-            <Link
-              href="/admin/categories"
-              className="px-4 py-2 text-sm font-medium text-neutral-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
-            >
-              카테고리 관리
-            </Link>
-            <Link
-              href="/admin/posts"
-              className="px-4 py-2 text-sm font-medium text-neutral-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
-            >
-              발행된 글 관리
-            </Link>
-            <Link
-              href="/admin/drafts/new"
-              className="px-6 py-2 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors"
-            >
-              새 Draft 작성
-            </Link>
-          </div>
+          <h1 className="text-3xl font-bold text-neutral-900 dark:text-white">발행된 글 목록</h1>
         </div>
 
         {loading ? (
           <div className="text-center py-20">
             <p className="text-neutral-600 dark:text-gray-400">로딩 중...</p>
           </div>
-        ) : drafts.length > 0 ? (
+        ) : posts.length > 0 ? (
           <div className="space-y-4">
-            {drafts.map((draft) => (
+            {posts.map((post) => (
               <div
-                key={draft.slug}
+                key={post.slug}
                 className="bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 p-6"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <h2 className="text-xl font-bold text-neutral-900 dark:text-white mb-2">
-                      {draft.title}
+                      {post.title}
                     </h2>
                     <p className="text-neutral-600 dark:text-gray-300 text-sm mb-3">
-                      {draft.excerpt}
+                      {post.excerpt}
                     </p>
                     <div className="flex items-center gap-3 text-xs text-neutral-400 dark:text-gray-500">
-                      <span>{new Date(draft.date).toLocaleDateString('ko-KR')}</span>
-                      {draft.updatedAt && (
-                        <>
-                          <span>•</span>
-                          <span>수정: {new Date(draft.updatedAt).toLocaleString('ko-KR')}</span>
-                        </>
-                      )}
+                      <span>{new Date(post.date).toLocaleDateString('ko-KR')}</span>
                     </div>
-                    {draft.tags && draft.tags.length > 0 && (
+                    {(post.mainCategories || post.subCategories) && (
                       <div className="flex flex-wrap gap-2 mt-3">
-                        {draft.tags.map((tag) => (
+                        {post.mainCategories?.map((cat) => (
                           <span
-                            key={tag}
+                            key={cat}
+                            className="px-3 py-1 text-xs font-semibold bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded"
+                          >
+                            {cat}
+                          </span>
+                        ))}
+                        {post.subCategories?.map((cat) => (
+                          <span
+                            key={cat}
                             className="px-3 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded"
                           >
-                            {tag}
+                            {cat}
                           </span>
                         ))}
                       </div>
@@ -159,19 +130,20 @@ export default function DraftsPage() {
                   </div>
                   <div className="flex items-center gap-2 ml-4">
                     <Link
-                      href={`/admin/drafts/${draft.slug}/edit`}
+                      href={`/blog/${post.slug}`}
+                      target="_blank"
+                      className="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                    >
+                      보기
+                    </Link>
+                    <Link
+                      href={`/admin/posts/${post.slug}/edit`}
                       className="px-4 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors"
                     >
                       편집
                     </Link>
                     <button
-                      onClick={() => handlePublish(draft.slug)}
-                      className="px-4 py-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-lg transition-colors"
-                    >
-                      발행
-                    </button>
-                    <button
-                      onClick={() => handleDelete(draft.slug)}
+                      onClick={() => handleDelete(post.slug)}
                       className="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                     >
                       삭제
@@ -185,16 +157,16 @@ export default function DraftsPage() {
           <div className="text-center py-20">
             <div className="text-6xl mb-6">📝</div>
             <h3 className="text-2xl font-bold text-neutral-900 dark:text-white mb-4">
-              Draft가 없습니다
+              발행된 글이 없습니다
             </h3>
             <p className="text-neutral-600 dark:text-gray-400 mb-6">
-              새로운 Draft를 작성해보세요!
+              Draft를 작성하고 발행해보세요!
             </p>
             <Link
-              href="/admin/drafts/new"
+              href="/admin/drafts"
               className="inline-block px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors"
             >
-              새 Draft 작성
+              Draft 관리로 이동
             </Link>
           </div>
         )}

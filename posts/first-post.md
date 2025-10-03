@@ -2,7 +2,8 @@
 title: "첫 번째 블로그 포스트"
 date: "2024-01-01"
 excerpt: "Next.js와 TypeScript로 만든 블로그의 첫 번째 포스트입니다."
-tags: ["Next.js", "TypeScript", "블로그"]
+mainCategories: ["recommended", "dev"]
+subCategories: ["web", "frontend"]
 author: "이진욱"
 thumbnail: "https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=500&h=300&fit=crop"
 ---

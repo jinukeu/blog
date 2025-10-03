@@ -5,12 +5,14 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { MarkdownEditor } from '@/components/MarkdownEditor';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { CategorySelector } from '@/components/CategorySelector';
 
 export default function NewDraftPage() {
   const router = useRouter();
   const [title, setTitle] = useState('');
   const [excerpt, setExcerpt] = useState('');
-  const [tags, setTags] = useState('');
+  const [mainCategories, setMainCategories] = useState<string[]>([]);
+  const [subCategories, setSubCategories] = useState<string[]>([]);
   const [content, setContent] = useState('');
   const [saving, setSaving] = useState(false);
 
@@ -22,6 +24,11 @@ export default function NewDraftPage() {
 
     if (!content.trim()) {
       alert('내용을 입력해주세요.');
+      return;
+    }
+
+    if (mainCategories.length === 0) {
+      alert('최소 하나의 대카테고리를 선택해주세요.');
       return;
     }
 
@@ -40,7 +47,8 @@ export default function NewDraftPage() {
         title,
         date: new Date().toISOString().split('T')[0],
         excerpt: excerpt || content.slice(0, 100) + '...',
-        tags: tags.split(',').map((tag) => tag.trim()).filter(Boolean),
+        mainCategories,
+        subCategories,
         author: '이진욱',
       };
 
@@ -104,8 +112,8 @@ export default function NewDraftPage() {
 
       {/* 메타데이터 입력 */}
       <div className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-[1400px] mx-auto px-6 py-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="max-w-[1400px] mx-auto px-6 py-4 space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
               value={title}
@@ -120,14 +128,15 @@ export default function NewDraftPage() {
               placeholder="요약 (선택사항)"
               className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
             />
-            <input
-              type="text"
-              value={tags}
-              onChange={(e) => setTags(e.target.value)}
-              placeholder="태그 (쉼표로 구분)"
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
-            />
           </div>
+
+          {/* 카테고리 선택 */}
+          <CategorySelector
+            selectedMainCategories={mainCategories}
+            selectedSubCategories={subCategories}
+            onMainCategoriesChange={setMainCategories}
+            onSubCategoriesChange={setSubCategories}
+          />
         </div>
       </div>
 

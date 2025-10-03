@@ -1,9 +1,81 @@
-import Link from "next/link";
-import { getAllPosts } from "@/lib/markdown";
-import { ThemeToggle } from "@/components/ThemeToggle";
+'use client';
 
-export default async function Home() {
-  const posts = getAllPosts();
+import Link from "next/link";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { useEffect, useState } from "react";
+import { Category } from "@/types/blog";
+
+interface Post {
+  slug: string;
+  title: string;
+  date: string;
+  excerpt: string;
+  mainCategories?: string[];
+  subCategories?: string[];
+  author?: string;
+  thumbnail?: string;
+}
+
+export default function Home() {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [mainCategories, setMainCategories] = useState<Category[]>([]);
+  const [subCategories, setSubCategories] = useState<Category[]>([]);
+  const [selectedMainCategory, setSelectedMainCategory] = useState<string>('recommended');
+  const [selectedSubCategory, setSelectedSubCategory] = useState<string>('all');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const [postsRes, categoriesRes] = await Promise.all([
+        fetch('/api/posts'),
+        fetch('/api/categories'),
+      ]);
+
+      const postsData = await postsRes.json();
+      const categoriesData = await categoriesRes.json();
+
+      setPosts(postsData);
+      setMainCategories(categoriesData.mainCategories || []);
+      setSubCategories(categoriesData.subCategories || []);
+
+      // 추천 카테고리가 존재하는지 확인
+      const hasRecommended = categoriesData.mainCategories?.some(
+        (cat: Category) => cat.id === 'recommended'
+      );
+
+      // 추천 카테고리가 없으면 'all'로 설정
+      if (!hasRecommended) {
+        setSelectedMainCategory('all');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 필터링된 포스트
+  const filteredPosts = posts.filter((post) => {
+    // 대카테고리 필터
+    if (selectedMainCategory !== 'all') {
+      if (!post.mainCategories?.includes(selectedMainCategory)) {
+        return false;
+      }
+    }
+
+    // 소카테고리 필터
+    if (selectedSubCategory !== 'all') {
+      if (!post.subCategories?.includes(selectedSubCategory)) {
+        return false;
+      }
+    }
+
+    return true;
+  });
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
@@ -44,26 +116,80 @@ export default async function Home() {
 
       {/* Toss Tech 스타일 메인 콘텐츠 */}
       <main className="max-w-[1200px] mx-auto px-6 py-8">
-        {/* 카테고리 필터 */}
-        <div className="flex items-center space-x-8 mb-12 pb-4 border-b border-neutral-100 dark:border-gray-800">
-          <button className="text-neutral-900 dark:text-white font-semibold border-b-2 border-primary-500 pb-2">
-            추천
-          </button>
-          <button className="text-neutral-500 dark:text-gray-400 hover:text-neutral-900 dark:hover:text-white font-medium pb-2 transition-colors">
-            전체
-          </button>
-                    <button className="text-neutral-500 dark:text-gray-400 hover:text-neutral-900 dark:hover:text-white font-medium pb-2 transition-colors">
-            개발
-          </button>
-                    <button className="text-neutral-500 dark:text-gray-400 hover:text-neutral-900 dark:hover:text-white font-medium pb-2 transition-colors">
-            일상
-          </button>
+        {/* 대카테고리 필터 */}
+        <div className="mb-6">
+          <div className="flex items-center space-x-6 pb-4 border-b border-neutral-100 dark:border-gray-800 overflow-x-auto">
+            <button
+              onClick={() => {
+                setSelectedMainCategory('all');
+                setSelectedSubCategory('all');
+              }}
+              className={`whitespace-nowrap font-medium pb-2 transition-colors ${
+                selectedMainCategory === 'all'
+                  ? 'text-neutral-900 dark:text-white font-semibold border-b-2 border-primary-500'
+                  : 'text-neutral-500 dark:text-gray-400 hover:text-neutral-900 dark:hover:text-white'
+              }`}
+            >
+              전체
+            </button>
+            {mainCategories.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => {
+                  setSelectedMainCategory(category.id);
+                  setSelectedSubCategory('all');
+                }}
+                className={`whitespace-nowrap font-medium pb-2 transition-colors ${
+                  selectedMainCategory === category.id
+                    ? 'text-neutral-900 dark:text-white font-semibold border-b-2 border-primary-500'
+                    : 'text-neutral-500 dark:text-gray-400 hover:text-neutral-900 dark:hover:text-white'
+                }`}
+              >
+                {category.name}
+              </button>
+            ))}
+          </div>
         </div>
+
+        {/* 소카테고리 필터 */}
+        {subCategories.length > 0 && (
+          <div className="mb-8">
+            <div className="flex items-center gap-2 flex-wrap">
+              <button
+                onClick={() => setSelectedSubCategory('all')}
+                className={`px-4 py-2 text-sm rounded-full transition-colors ${
+                  selectedSubCategory === 'all'
+                    ? 'bg-primary-500 text-white font-medium'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                }`}
+              >
+                전체
+              </button>
+              {subCategories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedSubCategory(category.id)}
+                  className={`px-4 py-2 text-sm rounded-full transition-colors ${
+                    selectedSubCategory === category.id
+                      ? 'bg-primary-500 text-white font-medium'
+                      : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* 아티클 리스트 */}
         <div className="space-y-4">
-          {posts.length > 0 ? (
-            posts.map((post) => (
+          {loading ? (
+            <div className="text-center py-20">
+              <p className="text-neutral-600 dark:text-gray-400">로딩 중...</p>
+            </div>
+          ) : filteredPosts.length > 0 ? (
+            filteredPosts.map((post) => (
               <article key={post.slug} className="group">
                 <Link href={`/blog/${post.slug}`}>
                   <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
@@ -112,16 +238,30 @@ export default async function Home() {
                             )}
                           </div>
 
-                          {post.tags && post.tags.length > 0 && (
+                          {(post.mainCategories || post.subCategories) && (
                             <div className="flex flex-wrap gap-2">
-                              {post.tags.slice(0, 3).map((tag) => (
-                                <span
-                                  key={tag}
-                                  className="px-4 py-1.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg"
-                                >
-                                  {tag}
-                                </span>
-                              ))}
+                              {post.mainCategories?.slice(0, 2).map((catId) => {
+                                const category = mainCategories.find((c) => c.id === catId);
+                                return category ? (
+                                  <span
+                                    key={catId}
+                                    className="px-4 py-1.5 text-xs font-semibold bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-lg"
+                                  >
+                                    {category.name}
+                                  </span>
+                                ) : null;
+                              })}
+                              {post.subCategories?.slice(0, 3).map((catId) => {
+                                const category = subCategories.find((c) => c.id === catId);
+                                return category ? (
+                                  <span
+                                    key={catId}
+                                    className="px-4 py-1.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg"
+                                  >
+                                    {category.name}
+                                  </span>
+                                ) : null;
+                              })}
                             </div>
                           )}
                         </div>
@@ -133,12 +273,16 @@ export default async function Home() {
             ))
           ) : (
             <div className="text-center py-20">
-              <div className="text-6xl mb-6">📝</div>
+              <div className="text-6xl mb-6">🔍</div>
               <h3 className="text-2xl font-bold text-neutral-900 dark:text-white mb-4">
-                첫 번째 글을 기다리고 있어요
+                {selectedMainCategory !== 'all' || selectedSubCategory !== 'all'
+                  ? '해당 카테고리에 글이 없습니다'
+                  : '첫 번째 글을 기다리고 있어요'}
               </h3>
               <p className="text-neutral-600 dark:text-gray-400 text-lg max-w-md mx-auto leading-relaxed">
-                아직 게시된 글이 없습니다. 곧 흥미로운 콘텐츠로 채워질 예정이에요!
+                {selectedMainCategory !== 'all' || selectedSubCategory !== 'all'
+                  ? '다른 카테고리를 선택해보세요.'
+                  : '아직 게시된 글이 없습니다. 곧 흥미로운 콘텐츠로 채워질 예정이에요!'}
               </p>
             </div>
           )}
