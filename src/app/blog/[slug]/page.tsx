@@ -1,21 +1,62 @@
-import { notFound } from 'next/navigation';
-import Link from 'next/link';
-import { getPostBySlug } from '@/lib/markdown';
+'use client';
+
+import { notFound, useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { BlogPost as BlogPostType, Category } from '@/types/blog';
 import BlurredNavigation from './BlurredNavigation';
 import Comments from '@/components/Comments';
 
-interface Props {
-  params: Promise<{ slug: string }>;
-}
+export default function BlogPost() {
+  const params = useParams();
+  const slug = params?.slug as string;
+  const [post, setPost] = useState<BlogPostType | null>(null);
+  const [mainCategories, setMainCategories] = useState<Category[]>([]);
+  const [subCategories, setSubCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export default async function BlogPost({ params }: Props) {
-  const { slug } = await params;
-  let post;
-  
-  try {
-    post = await getPostBySlug(slug);
-  } catch {
+  useEffect(() => {
+    if (!slug) return;
+
+    const fetchData = async () => {
+      try {
+        const [postRes, categoriesRes] = await Promise.all([
+          fetch(`/api/posts/${slug}/html`),
+          fetch('/api/categories'),
+        ]);
+
+        if (!postRes.ok) {
+          notFound();
+          return;
+        }
+
+        const postData = await postRes.json();
+        const categoriesData = await categoriesRes.json();
+
+        setPost(postData);
+        setMainCategories(categoriesData.mainCategories || []);
+        setSubCategories(categoriesData.subCategories || []);
+      } catch (error) {
+        console.error('Error fetching post:', error);
+        notFound();
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+        <p className="text-neutral-600 dark:text-gray-400">로딩 중...</p>
+      </div>
+    );
+  }
+
+  if (!post) {
     notFound();
+    return null;
   }
 
   return (
@@ -51,16 +92,30 @@ export default async function BlogPost({ params }: Props) {
                 )}
               </div>
 
-              {post.tags && post.tags.length > 0 && (
+              {(post.mainCategories || post.subCategories) && (
                 <div className="flex flex-wrap gap-2">
-                  {post.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                  {post.mainCategories?.map((catId) => {
+                    const category = mainCategories.find((c) => c.id === catId);
+                    return category ? (
+                      <span
+                        key={catId}
+                        className="px-3 py-1 text-xs font-semibold bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-lg"
+                      >
+                        {category.name}
+                      </span>
+                    ) : null;
+                  })}
+                  {post.subCategories?.map((catId) => {
+                    const category = subCategories.find((c) => c.id === catId);
+                    return category ? (
+                      <span
+                        key={catId}
+                        className="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg"
+                      >
+                        {category.name}
+                      </span>
+                    ) : null;
+                  })}
                 </div>
               )}
             </div>
