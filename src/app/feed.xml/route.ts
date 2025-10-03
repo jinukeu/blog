@@ -23,7 +23,7 @@ export async function GET() {
       <guid isPermaLink="true">https://yourdomain.com/blog/${post.slug}</guid>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
       ${post.author ? `<author>${post.author}</author>` : ''}
-      ${post.tags ? post.tags.map(tag => `<category>${tag}</category>`).join('') : ''}
+      ${post.subCategories ? post.subCategories.map(cat => `<category>${cat}</category>`).join('') : ''}
     </item>`
       )
       .join('')}
