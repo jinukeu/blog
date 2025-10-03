@@ -16,5 +16,6 @@ export interface BlogPostMeta {
   excerpt: string;
   tags?: string[];
   author?: string;
+  readTime?: string;
   thumbnail?: string;
 }
