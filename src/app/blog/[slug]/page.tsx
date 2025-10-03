@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getPostBySlug } from '@/lib/markdown';
 import BlurredNavigation from './BlurredNavigation';
+import Comments from '@/components/Comments';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -89,7 +90,7 @@ export default async function BlogPost({ params }: Props) {
           />
 
           {/* Author Card */}
-          <div className="mt-20 pt-8 border-t-2 border-gray-300 dark:border-gray-600">
+          <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800">
             <div className="flex items-center gap-5">
               <img
                 src="https://github.com/jinukeu.png"
@@ -128,6 +129,9 @@ export default async function BlogPost({ params }: Props) {
             </div>
           </div>
         </article>
+
+        {/* Comments Section */}
+        <Comments />
 
       </main>
 
