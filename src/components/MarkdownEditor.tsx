@@ -33,7 +33,7 @@ export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorP
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await fetch('/api/upload-image', {
+    const response = await fetch('/api/upload', {
       method: 'POST',
       body: formData,
     });

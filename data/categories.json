@@ -12,25 +12,9 @@
     },
     {
       "id": "life",
-      "name": "일상",
-      "slug": "life"
+      "name": "회고",
+      "slug": "회고"
     }
   ],
-  "subCategories": [
-    {
-      "id": "web",
-      "name": "웹개발",
-      "slug": "web"
-    },
-    {
-      "id": "tips",
-      "name": "팁",
-      "slug": "tips"
-    },
-    {
-      "id": "frontend",
-      "name": "프론트엔드",
-      "slug": "frontend"
-    }
-  ]
+  "subCategories": []
 }

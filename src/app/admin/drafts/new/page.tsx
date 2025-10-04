@@ -6,11 +6,14 @@ import Link from 'next/link';
 import { MarkdownEditor } from '@/components/MarkdownEditor';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { CategorySelector } from '@/components/CategorySelector';
+import { ThumbnailUpload } from '@/components/ThumbnailUpload';
 
 export default function NewDraftPage() {
   const router = useRouter();
   const [title, setTitle] = useState('');
   const [excerpt, setExcerpt] = useState('');
+  const [publishDate, setPublishDate] = useState(new Date().toISOString().split('T')[0]);
+  const [thumbnail, setThumbnail] = useState('');
   const [mainCategories, setMainCategories] = useState<string[]>([]);
   const [subCategories, setSubCategories] = useState<string[]>([]);
   const [content, setContent] = useState('');
@@ -45,11 +48,12 @@ export default function NewDraftPage() {
 
       const frontmatter = {
         title,
-        date: new Date().toISOString().split('T')[0],
+        date: publishDate,
         excerpt: excerpt || content.slice(0, 100) + '...',
         mainCategories,
         subCategories,
         author: '이진욱',
+        thumbnail: thumbnail || undefined,
       };
 
       const response = await fetch('/api/drafts', {
@@ -130,6 +134,18 @@ export default function NewDraftPage() {
             />
           </div>
 
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              발행일
+            </label>
+            <input
+              type="date"
+              value={publishDate}
+              onChange={(e) => setPublishDate(e.target.value)}
+              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white"
+            />
+          </div>
+
           {/* 카테고리 선택 */}
           <CategorySelector
             selectedMainCategories={mainCategories}
@@ -137,6 +153,9 @@ export default function NewDraftPage() {
             onMainCategoriesChange={setMainCategories}
             onSubCategoriesChange={setSubCategories}
           />
+
+          {/* 썸네일 업로드 */}
+          <ThumbnailUpload value={thumbnail} onChange={setThumbnail} />
         </div>
       </div>
 

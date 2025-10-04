@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import Image from "next/image";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useEffect, useState } from "react";
 import { Category } from "@/types/blog";
@@ -196,15 +197,19 @@ export default function Home() {
                   <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 p-4 sm:p-6">
                       {/* 썸네일 이미지 */}
-                      <div className="w-full sm:w-48 h-48 sm:h-32 flex-shrink-0 bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900 dark:to-emerald-800 rounded-lg flex items-center justify-center overflow-hidden">
+                      <div className="w-full sm:w-48 h-48 sm:h-32 flex-shrink-0 bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900 dark:to-emerald-800 rounded-lg overflow-hidden relative">
                         {post.thumbnail ? (
-                          <img
+                          <Image
                             src={post.thumbnail}
                             alt={post.title}
-                            className="w-full h-full object-cover"
+                            fill
+                            sizes="(max-width: 640px) 100vw, 192px"
+                            className="object-cover"
+                            quality={85}
+                            priority={false}
                           />
                         ) : (
-                          <div className="text-3xl">🧩</div>
+                          <div className="flex items-center justify-center w-full h-full text-3xl">🧩</div>
                         )}
                       </div>
 
