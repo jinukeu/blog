@@ -103,9 +103,23 @@ When the user requests optimization for a blog post (e.g., "cmc-10기-회고.md 
 1. **포스트 내용 분석**: Read and analyze the blog post content to understand the main topics and key points
 2. **주요 키워드 추출**: Extract relevant keywords from the content (technologies, concepts, tools mentioned)
 3. **검색 친화적인 제목/설명 생성**:
-   - Create SEO-friendly title that includes main keywords (longer and more descriptive than display title)
-   - Generate detailed description that includes key terms and value proposition
-   - Compile keyword array with all relevant search terms
+   - **Meta Title (seoTitle)**:
+     - 50-60자 이내로 작성 (Google은 보통 50-60자까지 표시)
+     - 주요 키워드를 제목 앞부분에 배치
+     - 브랜드명이나 사이트명은 구분자(|, -, :)로 구분하여 뒤에 배치
+     - 각 페이지마다 고유한 제목 작성 (중복 방지)
+     - 키워드 스터핑 금지, 자연스럽고 읽기 쉬운 문장 사용
+     - 클릭을 유도할 수 있는 명확하고 설득력 있는 제목
+   - **Meta Description (seoDescription)**:
+     - 150-160자 이내로 작성 (Google은 보통 155-160자까지 표시)
+     - 페이지 내용을 정확하게 요약
+     - 주요 키워드를 자연스럽게 포함
+     - 사용자가 클릭하고 싶게 만드는 가치 제안(value proposition) 포함
+     - 능동적이고 매력적인 언어 사용
+     - 각 페이지마다 고유한 설명 작성 (중복 방지)
+     - 명확하고 구체적인 정보 제공
+   - **Keywords (seoKeywords)**:
+     - Compile keyword array with all relevant search terms
 4. **frontmatter에 SEO 필드 추가**: Add `seoTitle`, `seoDescription`, and `seoKeywords` fields to the post's frontmatter
 
 #### Step 2: GEO Optimization (AI 검색 엔진용)
@@ -120,8 +134,8 @@ title: CMC 10기 회고
 excerpt: Central Makeus Challenge 10기 활동이 끝났다...
 
 # SEO fields (검색 엔진용)
-seoTitle: "CMC 10기 PM & 안드로이드 개발 회고 | MOSCOW 기법과 칸반보드 실전 활용"
-seoDescription: "대외활동 CMC 10기에서 개발 PM과 안드로이드 개발자로 활동하며 배운 MOSCOW 우선순위 설정, 칸반보드 관리, Custom View 활용 등 실전 경험을 공유합니다."
+seoTitle: "CMC 10기 PM & 안드로이드 개발 회고 - MOSCOW 기법과 칸반보드 활용법"  # 48자 (50-60자 권장)
+seoDescription: "CMC 10기에서 개발 PM과 안드로이드 개발자로 활동하며 배운 MOSCOW 우선순위 설정, 칸반보드 관리, Custom View 활용 등 실전 경험을 공유합니다."  # 79자 (150-160자 권장)
 seoKeywords: ["CMC", "대외활동", "PM", "안드로이드", "MOSCOW", "칸반보드", "프로젝트관리", "커스텀뷰"]
 
 # GEO fields (AI 검색 엔진용, 유저에게 안 보임)
