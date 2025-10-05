@@ -1,68 +1,104 @@
-'use client';
-
-import { notFound, useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { BlogPost as BlogPostType, Category } from '@/types/blog';
+import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
+import { getPostBySlug, getAllSlugs } from '@/lib/markdown';
+import { getAllCategories } from '@/lib/category';
 import BlurredNavigation from './BlurredNavigation';
 import Comments from '@/components/Comments';
+import { BlogPostJsonLd } from '@/components/JsonLd';
 
-export default function BlogPost() {
-  const params = useParams();
-  const slug = params?.slug as string;
-  const [post, setPost] = useState<BlogPostType | null>(null);
-  const [mainCategories, setMainCategories] = useState<Category[]>([]);
-  const [subCategories, setSubCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
 
-  useEffect(() => {
-    if (!slug) return;
+export async function generateStaticParams() {
+  const slugs = getAllSlugs();
+  return slugs.map((slug) => ({
+    slug: slug,
+  }));
+}
 
-    const fetchData = async () => {
-      try {
-        const [postRes, categoriesRes] = await Promise.all([
-          fetch(`/api/posts/${slug}/html`),
-          fetch('/api/categories'),
-        ]);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug: rawSlug } = await params;
+  const slug = decodeURIComponent(rawSlug);
 
-        if (!postRes.ok) {
-          notFound();
-          return;
-        }
+  try {
+    const post = await getPostBySlug(slug);
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://yourdomain.com';
+    const url = `${baseUrl}/blog/${slug}`;
+    const imageUrl = post.thumbnail ? `${baseUrl}${post.thumbnail}` : `${baseUrl}/og-default.png`;
 
-        const postData = await postRes.json();
-        const categoriesData = await categoriesRes.json();
-
-        setPost(postData);
-        setMainCategories(categoriesData.mainCategories || []);
-        setSubCategories(categoriesData.subCategories || []);
-      } catch (error) {
-        console.error('Error fetching post:', error);
-        notFound();
-      } finally {
-        setLoading(false);
-      }
+    return {
+      title: post.seoTitle || post.title,
+      description: post.seoDescription || post.excerpt,
+      keywords: post.seoKeywords || [...(post.mainCategories || []), ...(post.subCategories || [])],
+      authors: [{ name: post.author || '이진욱' }],
+      openGraph: {
+        type: 'article',
+        locale: 'ko_KR',
+        url: url,
+        title: post.seoTitle || post.title,
+        description: post.seoDescription || post.excerpt,
+        siteName: 'Jinukeu Blog',
+        images: [
+          {
+            url: imageUrl,
+            width: 1200,
+            height: 630,
+            alt: post.title,
+          },
+        ],
+        publishedTime: post.date,
+        authors: [post.author || '이진욱'],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: post.seoTitle || post.title,
+        description: post.seoDescription || post.excerpt,
+        images: [imageUrl],
+      },
+      alternates: {
+        canonical: url,
+      },
     };
-
-    fetchData();
-  }, [slug]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-white dark:bg-gray-900">
-        {/* 로딩 상태 - 빈 페이지로 유지 */}
-      </div>
-    );
+  } catch (error) {
+    return {
+      title: '포스트를 찾을 수 없습니다',
+    };
   }
+}
 
-  if (!post) {
+export default async function BlogPost({ params }: PageProps) {
+  const { slug: rawSlug } = await params;
+  const slug = decodeURIComponent(rawSlug);
+
+  let post;
+  try {
+    post = await getPostBySlug(slug);
+  } catch (error) {
     notFound();
-    return null;
   }
+
+  const { mainCategories, subCategories } = await getAllCategories();
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://yourdomain.com';
+  const url = `${baseUrl}/blog/${slug}`;
+  const imageUrl = post.thumbnail ? `${baseUrl}${post.thumbnail}` : undefined;
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
-      {/* Modern Blurred Navigation */}
-      <BlurredNavigation />
+    <>
+      <BlogPostJsonLd
+        title={post.seoTitle || post.title}
+        description={post.seoDescription || post.excerpt}
+        datePublished={post.date}
+        author={post.author || '이진욱'}
+        url={url}
+        image={imageUrl}
+        summary={post.summary}
+        keyTakeaways={post.keyTakeaways}
+      />
+
+      <div className="min-h-screen bg-white dark:bg-gray-900">
+        {/* Modern Blurred Navigation */}
+        <BlurredNavigation />
 
       <main className="max-w-3xl mx-auto px-6 pt-20 pb-12 md:pt-24 md:pb-16">
 
@@ -202,5 +238,6 @@ export default function BlogPost() {
         </div>
       </footer>
     </div>
+    </>
   );
 }

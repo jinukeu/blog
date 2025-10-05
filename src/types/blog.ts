@@ -20,6 +20,13 @@ export interface BlogPost {
   author?: string;
   readTime?: string;
   thumbnail?: string;
+  // SEO 전용 필드
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string[];
+  // GEO 전용 필드
+  summary?: string;
+  keyTakeaways?: string[];
 }
 
 export interface BlogPostMeta {
@@ -31,6 +38,13 @@ export interface BlogPostMeta {
   author?: string;
   readTime?: string;
   thumbnail?: string;
+  // SEO 전용 필드
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string[];
+  // GEO 전용 필드
+  summary?: string;
+  keyTakeaways?: string[];
 }
 
 export interface DraftPost {
@@ -45,6 +59,13 @@ export interface DraftPost {
   readTime?: string;
   thumbnail?: string;
   updatedAt?: string;
+  // SEO 전용 필드
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string[];
+  // GEO 전용 필드
+  summary?: string;
+  keyTakeaways?: string[];
 }
 
 export interface DraftPostMeta {
@@ -57,4 +78,11 @@ export interface DraftPostMeta {
   readTime?: string;
   thumbnail?: string;
   updatedAt?: string;
+  // SEO 전용 필드
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string[];
+  // GEO 전용 필드
+  summary?: string;
+  keyTakeaways?: string[];
 }

@@ -2,10 +2,10 @@
 title: CMC 10기 회고
 date: '2022-08-01'
 excerpt: |-
-  `Central Makeus Challenge` 10기 활동이 끝났다.  
-  처음 해본 대외활동이고, 여러모로 아쉬운 점이 많았다.  
-  아쉬웠던 점을 회고하려 한다.  
-    
+  `Central Makeus Challenge` 10기 활동이 끝났다.
+  처음 해본 대외활동이고, 여러모로 아쉬운 점이 많았다.
+  아쉬웠던 점을 회고하려 한다.
+
 
   ##...
 mainCategories:
@@ -13,6 +13,32 @@ mainCategories:
 subCategories: []
 author: 이진욱
 thumbnail: /images/drafts/1759562261502-image.png
+seoTitle: CMC 10기 회고 | 개발 PM & 안드로이드 개발자의 대외활동 후기 - MOSCOW, 칸반보드, Custom View 실전 경험
+seoDescription: Central Makeus Challenge 10기에서 개발 PM과 안드로이드 개발자로 활동하며 배운 실전 경험을 공유합니다. MOSCOW 우선순위 기법, 칸반보드 프로젝트 관리, Custom View 활용법, iOS 개발자와의 협업 노하우 등 대외활동 중 얻은 인사이트와 아쉬웠던 점을 솔직하게 회고합니다.
+seoKeywords:
+  - CMC
+  - Central Makeus Challenge
+  - 대외활동
+  - 개발 PM
+  - 프로젝트 매니저
+  - 안드로이드 개발
+  - MOSCOW 기법
+  - 칸반보드
+  - Kanban
+  - Custom View
+  - 커스텀뷰
+  - 프로젝트 관리
+  - iOS 협업
+  - 팀 프로젝트
+  - 개발 회고
+  - 리팩토링
+summary: CMC 10기에서 개발 PM과 안드로이드 개발자로 활동하며 배운 핵심 교훈 - MOSCOW 우선순위 기법으로 프로젝트 범위 관리, 칸반보드로 팀 진행상황 추적, Custom View로 재사용 가능한 UI 컴포넌트 작성, iOS 개발자와의 로직 공유를 통한 협업 효율성 향상
+keyTakeaways:
+  - MOSCOW 기법으로 프로젝트 시작 전 기능 우선순위를 명확히 설정
+  - 칸반보드는 팀원들에게 상세 작성을 요청해야 효과적
+  - 개발 전에 기능별 일정을 미리 계획하여 코드 품질 관리
+  - Custom View는 재사용되는 레이아웃에 필수적으로 활용
+  - iOS 개발자와 로직 공유로 사고 확장 및 개발 효율 향상
 ---
 `Central Makeus Challenge` 10기 활동이 끝났다.  
 처음 해본 대외활동이고, 여러모로 아쉬운 점이 많았다.  

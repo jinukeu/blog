@@ -19,22 +19,45 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: {
     default: "Jinukeu Blog",
-    template: "%s | Jinukeu Blog,"
+    template: "%s | Jinukeu Blog"
   },
-  keywords: ["블로그", "개발", "안드로이드", "Android", "Kotlin", "Java", "모바일"],
-  authors: [{ name: "이진욱" }],
+  description: "안드로이드 개발자 이진욱의 기술 블로그. Kotlin, Java, Android 개발 경험과 인사이트를 공유합니다.",
+  keywords: ["블로그", "개발", "안드로이드", "Android", "Kotlin", "Java", "모바일", "이진욱", "기술블로그"],
+  authors: [{ name: "이진욱", url: "https://github.com/jinukeu" }],
   creator: "이진욱",
-  metadataBase: new URL("https://yourdomain.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://yourdomain.com"),
   openGraph: {
     type: "website",
     locale: "ko_KR",
-    url: "https://yourdomain.com",
+    url: process.env.NEXT_PUBLIC_BASE_URL || "https://yourdomain.com",
     title: "Jinukeu Blog",
+    description: "안드로이드 개발자 이진욱의 기술 블로그",
     siteName: "Jinukeu Blog",
+    images: [
+      {
+        url: "/og-default.png",
+        width: 1200,
+        height: 630,
+        alt: "Jinukeu Blog",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Jinukeu Blog",
+    description: "안드로이드 개발자 이진욱의 기술 블로그",
+    images: ["/og-default.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useEffect, useState } from "react";
 import { Category } from "@/types/blog";
+import { WebsiteJsonLd } from "@/components/JsonLd";
 
 interface Post {
   slug: string;
@@ -80,9 +81,16 @@ export default function Home() {
   });
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
-      {/* Toss Tech 스타일 헤더 */}
-      <header className="bg-white dark:bg-gray-900 border-b border-neutral-100 dark:border-gray-800 sticky top-0 z-50">
+    <>
+      <WebsiteJsonLd
+        name="Jinukeu Blog"
+        description="안드로이드 개발자 이진욱의 기술 블로그. Kotlin, Java, Android 개발 경험과 인사이트를 공유합니다."
+        url={process.env.NEXT_PUBLIC_BASE_URL || "https://yourdomain.com"}
+      />
+
+      <div className="min-h-screen bg-white dark:bg-gray-900">
+        {/* Toss Tech 스타일 헤더 */}
+        <header className="bg-white dark:bg-gray-900 border-b border-neutral-100 dark:border-gray-800 sticky top-0 z-50">
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="flex items-center justify-between h-[59px]">
             <Link href="/" className="flex items-center">
@@ -302,5 +310,6 @@ export default function Home() {
         </div>
       </footer>
     </div>
+    </>
   );
 }

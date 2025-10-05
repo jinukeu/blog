@@ -27,6 +27,11 @@ export async function getPostBySlug(slug: string): Promise<BlogPost> {
     author: data.author,
     readTime: data.readTime,
     thumbnail: data.thumbnail,
+    seoTitle: data.seoTitle,
+    seoDescription: data.seoDescription,
+    seoKeywords: data.seoKeywords,
+    summary: data.summary,
+    keyTakeaways: data.keyTakeaways,
   };
 }
 
@@ -49,6 +54,11 @@ export function getAllPosts(): (BlogPostMeta & { slug: string })[] {
         subCategories: data.subCategories,
         author: data.author,
         thumbnail: data.thumbnail,
+        seoTitle: data.seoTitle,
+        seoDescription: data.seoDescription,
+        seoKeywords: data.seoKeywords,
+        summary: data.summary,
+        keyTakeaways: data.keyTakeaways,
       };
     });
 
