@@ -16,5 +16,16 @@
       "slug": "회고"
     }
   ],
-  "subCategories": []
+  "subCategories": [
+    {
+      "id": "sub_1759713206951",
+      "name": "Android",
+      "slug": "android"
+    },
+    {
+      "id": "sub_1759713217297",
+      "name": "Kotlin",
+      "slug": "kotlin"
+    }
+  ]
 }
