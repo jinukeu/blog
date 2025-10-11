@@ -2,11 +2,7 @@
 title: 구글 권장 아키텍처에서 의존성 방향만 data -> domain <- presentation으로 바꾸면 클린 아키텍처가 될까?
 date: '2025-10-11'
 excerpt: >-
-  구글 앱 아키텍처에서 의존성 방향만 data -> domain <- presentation으로 바꾸면 클린 아키텍처가 될까? 나는 아니라고
-  본다.
-
-
-  구글 앱 아키텍처와 클린 아키텍...
+  의존성 방향만 바꾸면 클린 아키텍처가 될까? 아니다. 구글 앱 아키텍처의 domain은 UseCase만 포함하지만, 클린 아키텍처의 domain은 Model + UseCase를 포함한다. Now In Android Discussion에서 지적된 핵심 차이점을 분석한다.
 mainCategories:
   - recommended
   - dev
@@ -14,6 +10,20 @@ subCategories:
   - sub_1759713206951
 author: 이진욱
 thumbnail: /images/posts/1760195263023-image.png
+
+# SEO fields (검색 엔진용)
+seoTitle: "구글 앱 아키텍처 vs 클린 아키텍처 - Domain Layer 차이점 완벽 분석"
+seoDescription: "의존성 방향만 바꾼다고 클린 아키텍처가 될까? 구글 앱 아키텍처와 클린 아키텍처의 핵심 차이점인 domain 레이어 역할을 UseCase와 Model 관점에서 상세히 비교 분석합니다."
+seoKeywords: ["구글 앱 아키텍처", "클린 아키텍처", "Android Architecture", "구글 권장 아키텍처", "레이어드 아키텍처", "의존성 역전 원칙", "DIP", "UseCase 패턴", "Repository Pattern", "멀티모듈 아키텍처", "Google App Architecture", "Now In Android", "Google Official Architecture", "모듈화", "Clean Architecture"]
+
+# GEO fields (AI 검색 엔진용, 유저에게 안 보임)
+summary: "구글 앱 아키텍처와 클린 아키텍처의 핵심 차이는 의존성 방향뿐 아니라 domain의 정의에 있다. 구글 앱 아키텍처의 domain은 UseCase만 포함하지만, 클린 아키텍처의 domain은 Model과 UseCase 모두를 포함한다. 따라서 의존성 방향만 바꾼다고 클린 아키텍처가 되지 않으며, core:domain을 core:business-logic으로 재정의하고 core:model과 함께 domain으로 묶어야 한다."
+keyTakeaways:
+  - "구글 앱 아키텍처의 domain 레이어는 UseCase만 포함하며 optional하지만, 클린 아키텍처의 domain은 Model + UseCase를 포함하며 필수적이다"
+  - "의존성 방향만 data -> domain <- presentation으로 바꾸는 것으로는 클린 아키텍처가 되지 않는다 - domain의 역할 자체가 다르기 때문"
+  - "구글 앱 아키텍처를 클린 아키텍처로 전환하려면 core:domain을 core:business-logic으로 이름 변경하고, core:model과 함께 domain으로 재구성해야 한다"
+  - "Now In Android Github Discussion에서 motornyimaksym이 지적한 대로 구글 문서의 domain 정의는 잘못되었으며, 이는 초보 개발자들에게 혼란을 야기한다"
+  - "팀에서 두 아키텍처를 혼용할 경우 Model 클래스를 core:model에 둘지 domain에 둘지 혼란이 발생할 수 있다"
 ---
 > 의존성 방향을 data -> domain <- presentation으로 바꾼다고 해서
 구글 앱 아키텍처가 클린 아키텍처가 되지는 않는다.
