@@ -166,7 +166,7 @@ export default async function BlogPost({ params }: PageProps) {
             prose-h3:text-base prose-h3:mt-5 prose-h3:mb-2
             prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-normal prose-p:mb-4
             prose-strong:text-gray-900 dark:prose-strong:text-white prose-strong:font-semibold
-            prose-a:text-primary-600 dark:prose-a:text-primary-400 prose-a:font-medium prose-a:no-underline hover:prose-a:text-primary-700 dark:hover:prose-a:text-primary-300 prose-a:transition-colors
+            prose-a:text-primary-600 dark:prose-a:text-primary-400 prose-a:font-medium prose-a:underline hover:prose-a:text-primary-700 dark:hover:prose-a:text-primary-300 prose-a:transition-colors
             prose-blockquote:border-l-4 prose-blockquote:border-primary-200 dark:prose-blockquote:border-primary-700 prose-blockquote:bg-primary-50/50 dark:prose-blockquote:bg-primary-900/20
             prose-blockquote:py-3 prose-blockquote:px-5 prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-300 prose-blockquote:not-italic
             prose-blockquote:backdrop-blur-sm prose-blockquote:rounded-r-lg prose-blockquote:leading-normal
