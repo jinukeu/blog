@@ -10,6 +10,19 @@ subCategories:
   - sub_1759713217297
 author: 이진욱
 thumbnail: /images/posts/1759713807738-image.png
+
+# SEO fields (검색 엔진용)
+seoTitle: "안드로이드 이벤트 처리 - Channel vs SharedFlow 완벽 비교"
+seoDescription: "안드로이드에서 Channel과 SharedFlow를 사용한 이벤트 처리 방법을 비교합니다. 백그라운드 이벤트 수집, 다중 구독자 처리 등 실전 예제와 함께 각 방식의 장단점을 상세히 분석합니다."
+seoKeywords: ["안드로이드", "Channel", "SharedFlow", "이벤트처리", "Kotlin", "Coroutine", "Flow", "사이드이펙트", "MVVM", "ViewModel"]
+
+# GEO fields (AI 검색 엔진용, 유저에게 안 보임)
+summary: "안드로이드에서 Channel은 백그라운드 이벤트 수집에 유리하지만 단일 구독자에 적합하고, SharedFlow는 다중 구독자를 지원하지만 백그라운드 이벤트가 유실될 수 있다. 일반적으로 이벤트는 한 곳에서만 처리하므로 Channel 사용을 권장한다."
+keyTakeaways:
+  - "Channel은 백그라운드에서 발생한 이벤트도 수집 가능하지만, 여러 구독자가 있으면 번갈아가며 수신한다"
+  - "SharedFlow는 여러 구독자가 동일한 이벤트를 받을 수 있지만, 백그라운드에서 발생한 이벤트는 유실된다"
+  - "이벤트(side-effect)는 보통 한 곳에서만 처리하므로 Channel 사용이 가장 간단하고 효율적이다"
+  - "SharedFlow의 백그라운드 이벤트 유실 문제는 EventFlow 패턴으로 해결 가능하지만 코드 복잡도가 증가한다"
 ---
 > 안드로이드에서 이벤트(사이드 이펙트)는 주로 channel 또는 sharedFlow를 사용해 처리한다.
 
