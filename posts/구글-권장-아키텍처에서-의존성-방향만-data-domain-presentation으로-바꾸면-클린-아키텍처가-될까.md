@@ -2,10 +2,11 @@
 title: 구글 권장 아키텍처에서 의존성 방향만 data -> domain <- presentation으로 바꾸면 클린 아키텍처가 될까?
 date: '2025-10-11'
 excerpt: >-
-  의존성 방향만 바꾸면 클린 아키텍처가 될까? 아니다. 구글 앱 아키텍처의 domain은 UseCase만 포함하지만, 클린 아키텍처의 domain은 Model + UseCase를 포함한다. Now In Android Discussion에서 지적된 핵심 차이점을 분석한다.
+  의존성 방향만 바꾸면 클린 아키텍처가 될까? 아니다. 구글 앱 아키텍처의 domain은 UseCase만 포함하지만,
+  클린 아키텍처에서의 domain은 더 넓은 범위를 포함한다. Now In Android Discussion에서 지적된 핵심 차이점을 분석한다.
 mainCategories:
-  - recommended
   - dev
+  - recommended
 subCategories:
   - sub_1759713206951
 author: 이진욱
@@ -54,8 +55,26 @@ core:model과 core:business-logic을 함께 domain으로 묶어야 한다.
 모두가 한번씩은 봤을 법한 [NIA Github Discussion](https://github.com/android/nowinandroid/discussions/1273)에서 [motornyimaksym의 코멘트](https://github.com/android/nowinandroid/discussions/1273#discussioncomment-8792788)를 살펴보자.
 
 **핵심 내용은 아래와 같다.**   
-> **And all of that starting from basic models and up to the place where we start talking about UI that's the domain.**   
-기본 모델부터 UI를 다루는 지점까지 — 이 모든 것이 도메인이다.
+> **Models aka simple pojo classes for domain entities. E.g. Car, Human, etc.**
+> 모델은 도메인 엔티티를 위한 단순한 POJO 클래스이다. 예를 들어 Car, Human 등이 있다.
+>
+> **Then relations. Human that drive the car is Driver.**
+> 그다음 관계를 정의한다. 자동차를 운전하는 사람은 Driver이다.
+>
+> **Than you define the abstractions for data sources for Cars, Humans.**
+> 그다음 Car와 Human에 대한 데이터 소스 추상화를 정의한다.
+>
+> **E.g. buyCar(money: Money): Car; hireDriver(money: Money).**
+> 예를 들어 buyCar(money: Money): Car, hireDriver(money: Money) 같은 것이다.
+>
+> **Then some logic getCars+getHumans=makeTheRace.**
+> 그다음 약간의 로직을 추가한다. getCars + getHumans = makeTheRace.
+>
+> **That's all about the domain.**
+> 그게 도메인의 전부다.
+
+> (중략 ...)
+
 >
 > **The domain definition is not limited only to UseCases.**   
 도메인의 정의는 UseCase에만 한정되지 않는다.
@@ -250,8 +269,79 @@ core:model과 core:business-logic을 함께 domain으로 묶어야 한다.
 
 </details>
 
+motornyimaksym이 말하는 domain은 다음과 같다.
+- 도메인 엔티티를 위한 모델 (Car, Human)
+- 둘의 관계 (Car + Human = Driver)
+- 데이터 소스 추상화 (buyCar, hireDriver)
+- 추가 로직 (getCars + getHumans = makeTheRace)
 
-다시 한번 설명하자면, 클린 아키텍처에서의 domain은 UseCase 뿐만 아니라 Model도 포함하고 있다. 반면에 구글 앱 아키텍처에서의 domain은 UseCase의 모음일 뿐이다. 즉, 구글 앱 아키텍처에서의 domain은 클린 아키텍처에서 말하는 domain이 아니라 UseCase의 모음이다. (그래서 구글 앱 아키텍처의 domain이 optional할 수 있는 것이다.)
+motornyimaksym의 말이 사실인지 [Robert C. Martin의 블로그 포스트](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)를 살펴보자.
+
+안드로이드 - [클린 아키텍처에서의 domain은 Entity, UseCase 영역에 해당](https://meetup.nhncloud.com/posts/345)하므로, 블로그 포스트에서 Entity, UseCase에 대한 부분을 가져왔다.
+
+> **Entities**
+> 엔티티
+>
+>**Entities encapsulate Enterprise wide business rules.**
+엔티티는 기업 전반의 비즈니스 규칙을 캡슐화한다.
+>
+>**An entity can be an object with methods, or it can be a set of data >structures and functions.**
+>엔티티는 메서드를 가진 객체일 수도 있고, 데이터 구조와 함수들의 집합일 수도 있다.
+>
+>**It doesn’t matter so long as the entities could be used by many different applications in the enterprise.**
+>이 엔티티들이 기업 내 여러 애플리케이션에서 사용될 수 있다면 형태는 중요하지 않다.
+
+>**If you don’t have an enterprise, and are just writing a single application, then these entities are the business objects of the application.**
+>만약 기업 규모의 시스템이 아니라 단일 애플리케이션을 작성하고 있다면, 이 엔티티들은 그 애플리케이션의 비즈니스 객체가 된다.
+
+>**They encapsulate the most general and high-level rules.**
+이들은 가장 일반적이고 고수준의 규칙을 캡슐화한다.
+
+>**They are the least likely to change when something external changes.**
+이들은 외부적인 변화가 있을 때 가장 변경될 가능성이 낮다.
+
+>**For example, you would not expect these objects to be affected by a change to page navigation, or security.**
+예를 들어, 페이지 네비게이션이나 보안 정책의 변경이 이 객체들에 영향을 줄 것이라고는 예상하지 않는다.
+
+>**No operational change to any particular application should affect the entity layer.**
+특정 애플리케이션의 운영상의 변화는 엔티티 레이어에 영향을 주어서는 안 된다.
+
+---
+
+>**Use Cases**
+유즈케이스
+
+>**The software in this layer contains application specific business rules.**
+이 레이어의 소프트웨어는 애플리케이션에 특화된 비즈니스 규칙을 포함한다.
+
+>**It encapsulates and implements all of the use cases of the system.**
+이 레이어는 시스템의 모든 유즈케이스를 캡슐화하고 구현한다.
+
+>**These use cases orchestrate the flow of data to and from the entities,**
+이 유즈케이스들은 엔티티로의 데이터 흐름과 엔티티로부터의 데이터 흐름을 조율한다.
+
+>**and direct those entities to use their enterprise wide business rules to achieve the goals of the use case.**
+그리고 엔티티가 그들의 기업 전반의 비즈니스 규칙을 사용하여 유즈케이스의 목표를 달성하도록 지시한다.
+
+>**We do not expect changes in this layer to affect the entities.**
+이 레이어의 변경이 엔티티에 영향을 주지는 않을 것으로 예상한다.
+
+>**We also do not expect this layer to be affected by changes to externalities such as the database, the UI, or any of the common frameworks.**
+또한, 데이터베이스, UI, 공통 프레임워크 등과 같은 외부 요소의 변경이 이 레이어에 영향을 주어서는 안 된다.
+
+>**This layer is isolated from such concerns.**
+이 레이어는 그러한 외부적 관심사로부터 격리되어 있다.
+
+>**We do, however, expect that changes to the operation of the application will affect the use-cases and therefore the software in this layer.**
+그러나 애플리케이션의 동작 방식이 변경된다면, 그 변화는 유즈케이스와 이 레이어의 소프트웨어에 영향을 미칠 것이다.
+
+>**If the details of a use-case change, then some code in this layer will certainly be affected.**
+만약 유즈케이스의 세부사항이 변경된다면, 이 레이어의 일부 코드는 반드시 영향을 받게 된다.
+
+Robert C Martin이 말하는 Entity, UseCase의 정의를 봤을 때, motornyimaksym이 말하는 domain과 일치하는 것을 확인할 수 있다.
+
+
+클린 아키텍처에서의 domain은 UseCase 뿐만 아니라 Model, Relation 등도 포함한다는 것이다. 반면에 구글 앱 아키텍처에서의 domain은 UseCase의 모음일 뿐이다. 즉, 구글 앱 아키텍처에서의 domain은 클린 아키텍처에서 말하는 domain이 아니라 UseCase의 모음이다. (그래서 구글 앱 아키텍처의 domain이 optional할 수 있는 것이다.)
 
 
 이 내용 이후에 [구글 공식 문서](https://developer.android.com/topic/architecture/domain-layer)에 관련 내용이 업데이트 되었다.
@@ -259,6 +349,18 @@ core:model과 core:business-logic을 함께 domain으로 묶어야 한다.
 ![pasted-image-1760193672155.png](/images/posts/1760193672153-image.png)
 ![pasted-image-1760154664222.png](/images/posts/1760154664220-image.png)
 
+
+번역하면 다음과 같다.
+> 도메인 레이어는 **복잡한 비즈니스 로직**이나, **여러 ViewModel에서 재사용되는 단순한 비즈니스 로직**을 캡슐화하는 역할을 담당한다.
+이 레이어는 선택 사항(optional)인데, 모든 앱이 이러한 요구사항을 가지는 것은 아니기 때문이다.
+즉, **복잡성을 다뤄야 하거나 재사용성을 높이고 싶을 때만** 사용하면 된다.
+
+> 참고: “도메인 레이어(domain layer)”라는 용어는 “클린 아키텍처(Clean Architecture)” 같은 다른 소프트웨어 아키텍처에서도 사용되지만, 그 의미가 다르다.
+> 안드로이드 공식 아키텍처 가이드에서 정의한 “도메인 레이어”의 의미를 다른 자료에서 본 정의와 혼동하지 말자.
+> **미묘하지만 중요한 차이점**이 있을 수 있다.
+
+
+---
 
 그래서 나는 의존성 방향만 바꾼다고 구글 앱 아키텍처가 클린 아키텍처가 된다고 생각하지 않는다. (domain의 의미가 완전히 다르기 때문에) core:domain을 core:business-logic으로 바꾸고 domain이 core:model, core:business-logic이라고 한다면 클린 아키텍처라고 볼 수 있을 것 같다.
 
