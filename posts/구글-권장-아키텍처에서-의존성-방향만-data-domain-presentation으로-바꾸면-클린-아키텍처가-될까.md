@@ -29,7 +29,7 @@ keyTakeaways:
 > 의존성 방향을 data -> domain <- presentation으로 바꾼다고 해서
 구글 앱 아키텍처가 클린 아키텍처가 되지는 않는다.
 >
-> 두 아키텍처에서 말하는 domain의 역할이 때문이다.
+> 두 아키텍처에서 말하는 domain의 역할이 다르기 때문이다.
 구글 앱 아키텍처의 core:domain을 core:business-logic으로 바꾸고,
 core:model과 core:business-logic을 함께 domain으로 묶어야 한다.
 
