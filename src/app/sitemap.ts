@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { getAllPosts } from '@/lib/markdown';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://yourdomain.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://blog.jinukeu.com';
   const posts = getAllPosts();
 
   const postUrls = posts.map((post) => ({
