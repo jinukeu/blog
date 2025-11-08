@@ -26,10 +26,13 @@ interface SelectedImage {
 export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [selectedImage, setSelectedImage] = useState<SelectedImage | null>(null);
+  const [showVideoModal, setShowVideoModal] = useState(false);
+  const [videoUrl, setVideoUrl] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const previewRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const uploadImage = async (file: File): Promise<string> => {
+  const uploadFile = async (file: File): Promise<{ url: string; type: 'image' | 'video' }> => {
     const formData = new FormData();
     formData.append('file', file);
 
@@ -39,11 +42,11 @@ export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorP
     });
 
     if (!response.ok) {
-      throw new Error('Failed to upload image');
+      throw new Error('Failed to upload file');
     }
 
     const data = await response.json();
-    return data.url;
+    return { url: data.url, type: data.type };
   };
 
   const insertImageMarkdown = (imageUrl: string, fileName: string) => {
@@ -67,21 +70,88 @@ export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorP
     }, 0);
   };
 
+  const insertVideoMarkdown = (videoUrl: string, fileName: string = 'video') => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+
+    const videoMarkdown = `\n<video width="100%" controls>\n  <source src="${videoUrl}" type="video/mp4">\n  브라우저가 비디오 태그를 지원하지 않습니다.\n</video>\n`;
+    const newText = text.substring(0, start) + videoMarkdown + text.substring(end);
+
+    onChange(newText);
+
+    // 커서를 비디오 마크다운 뒤로 이동
+    setTimeout(() => {
+      textarea.focus();
+      const newPosition = start + videoMarkdown.length;
+      textarea.setSelectionRange(newPosition, newPosition);
+    }, 0);
+  };
+
+  const insertYouTubeEmbed = (url: string) => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    // YouTube URL에서 video ID 추출
+    let videoId = '';
+    const patterns = [
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/,
+      /youtube\.com\/embed\/([^&\n?#]+)/,
+    ];
+
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match) {
+        videoId = match[1];
+        break;
+      }
+    }
+
+    if (!videoId) {
+      alert('올바른 YouTube URL이 아닙니다.');
+      return;
+    }
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+
+    const youtubeEmbed = `\n<iframe width="100%" height="400" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>\n`;
+    const newText = text.substring(0, start) + youtubeEmbed + text.substring(end);
+
+    onChange(newText);
+
+    setTimeout(() => {
+      textarea.focus();
+      const newPosition = start + youtubeEmbed.length;
+      textarea.setSelectionRange(newPosition, newPosition);
+    }, 0);
+  };
+
   const handleDrop = useCallback(
     async (e: DragEvent<HTMLTextAreaElement>) => {
       e.preventDefault();
       setIsDragging(false);
 
       const files = Array.from(e.dataTransfer.files);
-      const imageFiles = files.filter((file) => file.type.startsWith('image/'));
+      const mediaFiles = files.filter((file) =>
+        file.type.startsWith('image/') || file.type.startsWith('video/')
+      );
 
-      for (const file of imageFiles) {
+      for (const file of mediaFiles) {
         try {
-          const imageUrl = await uploadImage(file);
-          insertImageMarkdown(imageUrl, file.name);
+          const { url, type } = await uploadFile(file);
+          if (type === 'video') {
+            insertVideoMarkdown(url, file.name);
+          } else {
+            insertImageMarkdown(url, file.name);
+          }
         } catch (error) {
-          console.error('Error uploading image:', error);
-          alert('이미지 업로드에 실패했습니다.');
+          console.error('Error uploading file:', error);
+          alert('파일 업로드에 실패했습니다.');
         }
       }
     },
@@ -102,9 +172,9 @@ export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorP
         if (!file) continue;
 
         try {
-          const imageUrl = await uploadImage(file);
+          const { url } = await uploadFile(file);
           const fileName = `pasted-image-${Date.now()}.${file.type.split('/')[1]}`;
-          insertImageMarkdown(imageUrl, fileName);
+          insertImageMarkdown(url, fileName);
         } catch (error) {
           console.error('Error uploading image:', error);
           alert('이미지 업로드에 실패했습니다.');
@@ -121,6 +191,45 @@ export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorP
 
   const handleDragLeave = () => {
     setIsDragging(false);
+  };
+
+  const handleVideoFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('video/')) {
+      alert('비디오 파일만 업로드할 수 있습니다.');
+      return;
+    }
+
+    try {
+      const { url } = await uploadFile(file);
+      insertVideoMarkdown(url, file.name);
+    } catch (error) {
+      console.error('Error uploading video:', error);
+      alert('비디오 업로드에 실패했습니다.');
+    }
+
+    // Reset input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const handleVideoModalSubmit = () => {
+    if (!videoUrl.trim()) {
+      alert('URL을 입력해주세요.');
+      return;
+    }
+
+    if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+      insertYouTubeEmbed(videoUrl);
+    } else {
+      insertVideoMarkdown(videoUrl);
+    }
+
+    setVideoUrl('');
+    setShowVideoModal(false);
   };
 
   // 프리뷰 영역의 이미지 클릭 이벤트 처리
@@ -213,44 +322,114 @@ export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorP
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-4 h-full">
-        {/* 에디터 */}
-        <div className="relative h-full">
-          <textarea
-            ref={textareaRef}
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onPaste={handlePaste}
-            placeholder={placeholder || '마크다운으로 작성하세요...\n\n이미지를 드래그 앤 드롭하거나 붙여넣기 할 수 있습니다.\n프리뷰에서 이미지를 클릭하면 크기를 조절할 수 있습니다.'}
-            className={`w-full h-full p-4 font-mono text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none dark:bg-gray-800 dark:text-white dark:border-gray-700 ${
-              isDragging ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20' : 'border-gray-300'
-            }`}
-          />
-          {isDragging && (
-            <div className="absolute inset-0 flex items-center justify-center bg-primary-50/80 dark:bg-primary-900/40 rounded-lg pointer-events-none">
-              <p className="text-lg font-semibold text-primary-600 dark:text-primary-400">이미지를 여기에 놓으세요</p>
-            </div>
-          )}
+      <div className="flex flex-col h-full gap-2">
+        {/* 툴바 */}
+        <div className="flex gap-2 pb-2 border-b border-gray-200 dark:border-gray-700">
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+          >
+            📹 비디오 업로드
+          </button>
+          <button
+            onClick={() => setShowVideoModal(true)}
+            className="px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+          >
+            🔗 YouTube/URL 삽입
+          </button>
         </div>
 
-        {/* 프리뷰 */}
-        <div
-          ref={previewRef}
-          className="h-full overflow-y-auto p-4 border rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700"
-        >
-          <article className="prose prose-neutral dark:prose-invert max-w-none [&_img]:cursor-pointer [&_img]:hover:opacity-80 [&_img]:transition-opacity">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeHighlight, rehypeRaw]}
-            >
-              {value || '*프리뷰가 여기에 표시됩니다*'}
-            </ReactMarkdown>
-          </article>
+        <div className="grid grid-cols-2 gap-4 flex-1">
+          {/* 에디터 */}
+          <div className="relative h-full">
+            <textarea
+              ref={textareaRef}
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onPaste={handlePaste}
+              placeholder={placeholder || '마크다운으로 작성하세요...\n\n이미지/비디오를 드래그 앤 드롭하거나 붙여넣기 할 수 있습니다.\n프리뷰에서 이미지를 클릭하면 크기를 조절할 수 있습니다.'}
+              className={`w-full h-full p-4 font-mono text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none dark:bg-gray-800 dark:text-white dark:border-gray-700 ${
+                isDragging ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20' : 'border-gray-300'
+              }`}
+            />
+            {isDragging && (
+              <div className="absolute inset-0 flex items-center justify-center bg-primary-50/80 dark:bg-primary-900/40 rounded-lg pointer-events-none">
+                <p className="text-lg font-semibold text-primary-600 dark:text-primary-400">파일을 여기에 놓으세요</p>
+              </div>
+            )}
+          </div>
+
+          {/* 프리뷰 */}
+          <div
+            ref={previewRef}
+            className="h-full overflow-y-auto p-4 border rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700"
+          >
+            <article className="prose prose-neutral dark:prose-invert max-w-none [&_img]:cursor-pointer [&_img]:hover:opacity-80 [&_img]:transition-opacity [&_video]:max-w-full">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeHighlight, rehypeRaw]}
+              >
+                {value || '*프리뷰가 여기에 표시됩니다*'}
+              </ReactMarkdown>
+            </article>
+          </div>
         </div>
       </div>
+
+      {/* 숨겨진 파일 input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="video/*"
+        onChange={handleVideoFileSelect}
+        className="hidden"
+      />
+
+      {/* 비디오 URL 입력 모달 */}
+      {showVideoModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              비디오 URL 삽입
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              YouTube URL 또는 직접 비디오 파일 URL을 입력하세요.
+            </p>
+            <input
+              type="text"
+              value={videoUrl}
+              onChange={(e) => setVideoUrl(e.target.value)}
+              placeholder="https://www.youtube.com/watch?v=..."
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-gray-700 dark:text-white mb-4"
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  handleVideoModalSubmit();
+                }
+              }}
+            />
+            <div className="flex gap-2 justify-end">
+              <button
+                onClick={() => {
+                  setShowVideoModal(false);
+                  setVideoUrl('');
+                }}
+                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
+              >
+                취소
+              </button>
+              <button
+                onClick={handleVideoModalSubmit}
+                className="px-4 py-2 text-sm font-medium bg-primary-500 text-white rounded hover:bg-primary-600 transition-colors"
+              >
+                삽입
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 이미지 크기 조절 모달 */}
       {selectedImage && (
