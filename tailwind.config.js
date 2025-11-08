@@ -9,8 +9,21 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['SUIT Variable', 'ui-sans-serif', 'system-ui'],
-        mono: ['var(--font-geist-mono)', 'ui-monospace', 'SFMono-Regular'],
+        sans: [
+          'Pretendard Variable',
+          'Pretendard',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'system-ui',
+          'Roboto',
+          'Helvetica Neue',
+          'Segoe UI',
+          'Apple SD Gothic Neo',
+          'Noto Sans KR',
+          'Malgun Gothic',
+          'sans-serif'
+        ],
+        mono: ['var(--font-geist-mono)', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
       },
       colors: {
         border: 'hsl(var(--border))',
@@ -21,16 +34,17 @@ module.exports = {
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
-          50: '#ecfdf5',
-          100: '#d1fae5',
-          200: '#a7f3d0',
-          300: '#6ee7b7',
-          400: '#34d399',
-          500: '#10b981',
-          600: '#059669',
-          700: '#047857',
-          800: '#065f46',
-          900: '#064e3b',
+          // Medium's green color scale
+          50: '#e6f9f2',
+          100: '#ccf3e5',
+          200: '#99e7cb',
+          300: '#66dbb0',
+          400: '#33cf96',
+          500: '#00ab6b',  // Medium's brand green
+          600: '#008956',
+          700: '#006741',
+          800: '#00442b',
+          900: '#002216',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',

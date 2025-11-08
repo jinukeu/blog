@@ -166,7 +166,7 @@ export default function DraftsPage() {
                     </Link>
                     <button
                       onClick={() => handlePublish(draft.slug)}
-                      className="px-4 py-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-lg transition-colors"
+                      className="px-4 py-2 text-sm font-medium text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors"
                     >
                       발행
                     </button>
