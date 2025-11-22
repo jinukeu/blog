@@ -8,13 +8,27 @@
 }
 
 #nprogress .bar {
-  background: #00ab6b;  /* Medium's green */
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+  background-size: 200% 100%;
+  animation: progress-gradient 2s ease infinite;
   position: fixed;
   z-index: 9999;
   top: 0;
   left: 0;
   width: 100%;
-  height: 2px;  /* Thinner, more minimal */
+  height: 2px;
+}
+
+@keyframes progress-gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 다크 모드에서 더 밝은 그라데이션 */
+.dark #nprogress .bar {
+  background: linear-gradient(90deg, #60a5fa, #a78bfa, #f472b6);
+  background-size: 200% 100%;
 }
 
 #nprogress .peg {
@@ -23,6 +37,7 @@
   right: 0px;
   width: 100px;
   height: 100%;
+  box-shadow: 0 0 10px currentColor, 0 0 5px currentColor;
   opacity: 1;
   transform: rotate(3deg) translate(0px, -4px);
 }
@@ -35,20 +50,144 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
   }
-  
+
   .line-clamp-2 {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
-  
+
   .line-clamp-3 {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
   }
+
+  /* 스크롤바 숨기기 */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Blog Post Prose Styling - GitHub Inspired */
+@layer components {
+  .prose-blog {
+    @apply prose prose-lg max-w-none;
+
+    /* Headings */
+    & h1, & h2, & h3, & h4, & h5, & h6 {
+      @apply font-bold text-gray-900 dark:text-white tracking-tight;
+    }
+    & h1 { @apply text-3xl mt-12 mb-6 leading-tight; }
+    & h2 { @apply text-2xl mt-10 mb-5 leading-snug; }
+    & h3 { @apply text-xl mt-8 mb-4 leading-snug; }
+
+    /* Paragraphs */
+    & p {
+      @apply text-[19px] leading-[1.58] text-gray-900 dark:text-gray-100 mb-7 tracking-normal;
+    }
+
+    /* Strong & Emphasis */
+    & strong { @apply text-gray-900 dark:text-white font-bold; }
+    & em { @apply italic; }
+
+    /* Links */
+    & a {
+      @apply text-gray-900 dark:text-gray-100 underline decoration-gray-400 dark:decoration-gray-600
+             hover:decoration-gray-900 dark:hover:decoration-gray-300 transition-colors underline-offset-2;
+    }
+
+    /* Blockquotes */
+    & blockquote {
+      @apply border-l-[3px] border-gray-900 dark:border-gray-300 pl-5 not-italic
+             text-gray-700 dark:text-gray-400 leading-[1.58] my-8;
+      quotes: none;
+    }
+
+    /* Lists */
+    & ul, & ol { @apply my-8; }
+    & li {
+      @apply text-[19px] leading-[1.58] text-gray-900 dark:text-gray-100 mb-2;
+    }
+    & li::marker { @apply text-gray-500; }
+
+    /* Images */
+    & img { @apply rounded my-10 w-full; }
+
+    /* Horizontal Rules */
+    & hr { @apply border-gray-300 dark:border-gray-700 my-12 border-t; }
+
+    /* Tables */
+    & table { @apply w-full my-8 border-collapse; }
+    & th {
+      @apply bg-gray-100 dark:bg-gray-800 px-4 py-3 text-left font-semibold
+             border-b border-gray-200 dark:border-gray-700;
+    }
+    & td { @apply px-4 py-3 border-b border-gray-200 dark:border-gray-700; }
+    & tr:hover td { @apply bg-gray-50 dark:bg-gray-800/50; }
+  }
+}
+
+/* GitHub-style Code Highlighting - Inline Code */
+.prose-blog :not(pre) > code {
+  padding: 0.2em 0.4em;
+  border-radius: 6px;
+  font-size: 85%;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  color: #1f2328;
+  background-color: rgba(175, 184, 193, 0.2);
+}
+.prose-blog :not(pre) > code::before,
+.prose-blog :not(pre) > code::after {
+  content: none;
+}
+
+/* GitHub-style Code Blocks - Light Mode */
+.prose-blog pre {
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.45;
+  margin: 24px 0;
+  border: 1px solid #d1d9e0;
+  background-color: #f6f8fa !important;
+}
+.prose-blog pre code,
+.prose-blog pre code.hljs {
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  font-size: 14px;
+  background-color: transparent !important;
+  color: #24292e;
+}
+/* highlight.js 테마 배경색 오버라이드 */
+.prose-blog .hljs {
+  background: transparent !important;
+  color: #24292e;
+}
+
+/* GitHub-style Code - Dark Mode */
+.dark .prose-blog :not(pre) > code {
+  color: #e6edf3;
+  background-color: rgba(110, 118, 129, 0.4);
+}
+.dark .prose-blog pre {
+  border-color: #3d444d;
+  background-color: #161b22 !important;
+}
+.dark .prose-blog pre code,
+.dark .prose-blog pre code.hljs,
+.dark .prose-blog .hljs {
+  background: transparent !important;
+  color: #e6edf3;
 }
 
 /* Smooth scrolling for anchor links */
@@ -58,9 +197,55 @@ html {
 
 /* Enhanced focus styles for accessibility */
 *:focus-visible {
-  outline: 2px solid #00ab6b;  /* Medium's green */
+  outline: 2px solid hsl(var(--primary));
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Skip to content link for accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  padding: 8px 16px;
+  z-index: 100;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Focus ring utility classes */
+.focus-ring {
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
+}
+
+/* Screen reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 /* Enhanced Glass morphism effects for modern design */

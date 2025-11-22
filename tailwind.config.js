@@ -68,6 +68,16 @@ module.exports = {
         md: '8px',
         sm: '4px',
       },
+      maxWidth: {
+        'content': '60rem',      // 960px - 메인 콘텐츠 영역
+        'prose': '56rem',        // 896px - 블로그 글 영역
+        'wide': '72rem',         // 1152px - 넓은 레이아웃
+      },
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
+        '128': '32rem',
+      },
       boxShadow: {
         soft: '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
         card: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
@@ -81,10 +91,45 @@ module.exports = {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(0)' },
         },
+        'shimmer': {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+        'pulse-soft': {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.6' },
+        },
+        'spin-slow': {
+          'from': { transform: 'rotate(0deg)' },
+          'to': { transform: 'rotate(360deg)' },
+        },
+        'toast-in': {
+          '0%': { opacity: '0', transform: 'translateY(100%) scale(0.9)' },
+          '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+        },
+        'toast-out': {
+          '0%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+          '100%': { opacity: '0', transform: 'translateY(100%) scale(0.9)' },
+        },
+        'modal-in': {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        'backdrop-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
       },
       animation: {
         'fade-in': 'fade-in 0.3s ease-out',
         'slide-in': 'slide-in 0.3s ease-out',
+        'shimmer': 'shimmer 2s infinite linear',
+        'pulse-soft': 'pulse-soft 2s ease-in-out infinite',
+        'spin-slow': 'spin-slow 1s linear infinite',
+        'toast-in': 'toast-in 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+        'toast-out': 'toast-out 0.2s ease-in',
+        'modal-in': 'modal-in 0.2s ease-out',
+        'backdrop-in': 'backdrop-in 0.2s ease-out',
       },
     },
   },

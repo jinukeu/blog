@@ -15,9 +15,10 @@ export function SyntaxHighlightStyle() {
     return null;
   }
 
+  // GitHub 스타일 코드 하이라이팅 (라이트/다크 모드 지원)
   const href = resolvedTheme === 'dark'
     ? 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css'
-    : 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/nord.min.css';
+    : 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css';
 
   return (
     <link rel="stylesheet" href={href} />

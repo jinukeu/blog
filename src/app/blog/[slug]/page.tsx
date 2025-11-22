@@ -100,7 +100,7 @@ export default async function BlogPost({ params }: PageProps) {
         {/* Modern Blurred Navigation */}
         <BlurredNavigation />
 
-      <main className="max-w-[900px] mx-auto px-8 pt-20 pb-12 md:pt-24 md:pb-16">
+      <main className="max-w-prose mx-auto px-8 pt-20 pb-12 md:pt-24 md:pb-16">
 
         <article>
           {/* Medium-style Article Header */}
@@ -159,20 +159,7 @@ export default async function BlogPost({ params }: PageProps) {
 
           {/* Medium-style Article Content - Optimized for Readability */}
           <div
-            className="prose prose-lg max-w-none
-            prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white prose-headings:tracking-tight
-            prose-h1:text-3xl prose-h1:mt-12 prose-h1:mb-6 prose-h1:leading-tight
-            prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-5 prose-h2:leading-snug
-            prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-h3:leading-snug
-            prose-p:text-[19px] prose-p:leading-[1.58] prose-p:text-gray-900 dark:prose-p:text-gray-100 prose-p:mb-7 prose-p:tracking-normal
-            prose-strong:text-gray-900 dark:prose-strong:text-white prose-strong:font-bold
-            prose-a:text-gray-900 dark:prose-a:text-gray-100 prose-a:underline prose-a:decoration-gray-400 dark:prose-a:decoration-gray-600 hover:prose-a:decoration-gray-900 dark:hover:prose-a:decoration-gray-300 prose-a:transition-colors prose-a:underline-offset-2
-            prose-blockquote:border-l-[3px] prose-blockquote:border-gray-900 dark:prose-blockquote:border-gray-300 prose-blockquote:pl-5 prose-blockquote:not-italic prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-400 prose-blockquote:leading-[1.58] prose-blockquote:my-8 prose-blockquote:quotes-none
-            prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:text-gray-900 dark:prose-code:text-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-[17px] prose-code:font-mono prose-code:before:content-none prose-code:after:content-none
-            prose-pre:bg-gray-100 dark:prose-pre:bg-gray-800 prose-pre:border-none prose-pre:rounded prose-pre:p-5 prose-pre:overflow-x-auto prose-pre:text-[15px] prose-pre:leading-[1.5] prose-pre:my-8
-            prose-ul:my-8 prose-ol:my-8 prose-li:text-[19px] prose-li:leading-[1.58] prose-li:text-gray-900 dark:prose-li:text-gray-100 prose-li:mb-2 prose-li:marker:text-gray-500
-            prose-img:rounded prose-img:my-10 prose-img:w-full
-            prose-hr:border-gray-300 dark:prose-hr:border-gray-700 prose-hr:my-12 prose-hr:border-t"
+            className="prose-blog"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
@@ -225,7 +212,7 @@ export default async function BlogPost({ params }: PageProps) {
 
       {/* Medium-style Footer */}
       <footer className="border-t border-gray-200 dark:border-gray-700 mt-20">
-        <div className="max-w-[900px] mx-auto px-8 py-8">
+        <div className="max-w-prose mx-auto px-8 py-8">
           <div className="text-center text-sm text-gray-500 dark:text-gray-400">
             © jinukeu
           </div>

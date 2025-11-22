@@ -6,6 +6,8 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { useEffect, useState } from "react";
 import { Category } from "@/types/blog";
 import { WebsiteJsonLd } from "@/components/JsonLd";
+import { CategoryTabs, CategoryPills } from "@/components/ui/CategoryTabs";
+import { PostCardSkeleton } from "@/components/ui/Skeleton";
 
 interface Post {
   slug: string;
@@ -91,7 +93,7 @@ export default function Home() {
       <div className="min-h-screen bg-white dark:bg-gray-900">
         {/* Medium-style Header */}
         <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50 backdrop-blur-sm bg-white/90 dark:bg-gray-900/90">
-        <div className="max-w-[1000px] mx-auto px-8 py-4">
+        <div className="max-w-content mx-auto px-8 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center">
               <span className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">jinukeu</span>
@@ -123,78 +125,37 @@ export default function Home() {
       </header>
 
       {/* Medium-style Main Content */}
-      <main className="max-w-[1000px] mx-auto px-8 py-12">
+      <main className="max-w-content mx-auto px-8 py-12">
         {/* Medium-style Category Tabs */}
         <div className="mb-10">
-          <div className="flex items-center gap-8 pb-5 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
-            <button
-              onClick={() => {
-                setSelectedMainCategory('all');
-                setSelectedSubCategory('all');
-              }}
-              className={`whitespace-nowrap text-base pb-4 transition-colors ${
-                selectedMainCategory === 'all'
-                  ? 'text-gray-900 dark:text-white border-b-[2px] border-gray-900 dark:border-white -mb-[2px] font-semibold'
-                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-              }`}
-            >
-              전체
-            </button>
-            {mainCategories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => {
-                  setSelectedMainCategory(category.id);
-                  setSelectedSubCategory('all');
-                }}
-                className={`whitespace-nowrap text-base pb-4 transition-colors ${
-                  selectedMainCategory === category.id
-                    ? 'text-gray-900 dark:text-white border-b-[2px] border-gray-900 dark:border-white -mb-[2px] font-semibold'
-                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-                }`}
-              >
-                {category.name}
-              </button>
-            ))}
-          </div>
+          <CategoryTabs
+            categories={mainCategories}
+            selectedCategory={selectedMainCategory}
+            onSelect={(categoryId) => {
+              setSelectedMainCategory(categoryId);
+              setSelectedSubCategory('all');
+            }}
+          />
         </div>
 
         {/* Sub-category Pills */}
         {subCategories.length > 0 && (
           <div className="mb-10">
-            <div className="flex items-center gap-2 flex-wrap">
-              <button
-                onClick={() => setSelectedSubCategory('all')}
-                className={`px-4 py-1.5 text-sm rounded-full transition-colors ${
-                  selectedSubCategory === 'all'
-                    ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                }`}
-              >
-                전체
-              </button>
-              {subCategories.map((category) => (
-                <button
-                  key={category.id}
-                  onClick={() => setSelectedSubCategory(category.id)}
-                  className={`px-4 py-1.5 text-sm rounded-full transition-colors ${
-                    selectedSubCategory === category.id
-                      ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
-                      : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                  }`}
-                >
-                  {category.name}
-                </button>
-              ))}
-            </div>
+            <CategoryPills
+              categories={subCategories}
+              selectedCategory={selectedSubCategory}
+              onSelect={setSelectedSubCategory}
+            />
           </div>
         )}
 
         {/* Medium-style Article List */}
         <div className="divide-y divide-gray-200 dark:divide-gray-700">
           {loading ? (
-            <div className="text-center py-20">
-              {/* 로딩 상태 - 빈 공간으로 유지 */}
+            <div className="divide-y divide-gray-200 dark:divide-gray-700">
+              {[1, 2, 3].map((i) => (
+                <PostCardSkeleton key={i} />
+              ))}
             </div>
           ) : filteredPosts.length > 0 ? (
             filteredPosts.map((post) => (
@@ -294,7 +255,7 @@ export default function Home() {
         </div>
       </main>
       <footer className="border-t border-gray-200 dark:border-gray-700 mt-20">
-        <div className="max-w-[1000px] mx-auto px-8 py-12">
+        <div className="max-w-content mx-auto px-8 py-12">
           <div className="text-center text-sm text-gray-500 dark:text-gray-400">
             © jinukeu
           </div>
