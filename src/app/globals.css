@@ -103,11 +103,25 @@
              hover:decoration-gray-900 dark:hover:decoration-gray-300 transition-colors underline-offset-2;
     }
 
-    /* Blockquotes */
+    /* Blockquotes - Medium-inspired editorial style */
     & blockquote {
-      @apply border-l-[3px] border-gray-900 dark:border-gray-300 pl-5 not-italic
-             text-gray-700 dark:text-gray-400 leading-[1.58] my-8;
+      @apply relative pl-6 pr-6 py-4 my-6 not-italic rounded-sm;
+      border-left: 3px solid hsl(var(--foreground) / 0.12);
+      background: hsl(var(--foreground) / 0.02);
       quotes: none;
+    }
+    .dark & blockquote {
+      background: hsl(var(--foreground) / 0.04);
+    }
+    & blockquote p {
+      @apply text-[19px] leading-[1.65] tracking-[-0.003em] not-italic;
+      color: hsl(var(--foreground) / 0.75);
+    }
+    & blockquote p:first-child {
+      @apply mt-0;
+    }
+    & blockquote p:last-child {
+      @apply mb-0;
     }
 
     /* Lists */
