@@ -34,17 +34,6 @@ module.exports = {
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
-          // Medium's green color scale
-          50: '#e6f9f2',
-          100: '#ccf3e5',
-          200: '#99e7cb',
-          300: '#66dbb0',
-          400: '#33cf96',
-          500: '#00ab6b',  // Medium's brand green
-          600: '#008956',
-          700: '#006741',
-          800: '#00442b',
-          900: '#002216',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
@@ -61,6 +50,20 @@ module.exports = {
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
+        },
+        // Monochrome neutral scale
+        neutral: {
+          50: '#FAFAFA',
+          100: '#F5F5F5',
+          200: '#E5E5E5',
+          300: '#D4D4D4',
+          400: '#A3A3A3',
+          500: '#737373',
+          600: '#525252',
+          700: '#404040',
+          800: '#262626',
+          900: '#171717',
+          950: '#0A0A0A',
         },
       },
       borderRadius: {
@@ -85,6 +88,10 @@ module.exports = {
       keyframes: {
         'fade-in': {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'fade-in-up': {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         'slide-in': {
@@ -119,9 +126,14 @@ module.exports = {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
+        'theme-rotate': {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(180deg)' },
+        },
       },
       animation: {
         'fade-in': 'fade-in 0.3s ease-out',
+        'fade-in-up': 'fade-in-up 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
         'slide-in': 'slide-in 0.3s ease-out',
         'shimmer': 'shimmer 2s infinite linear',
         'pulse-soft': 'pulse-soft 2s ease-in-out infinite',
@@ -130,6 +142,15 @@ module.exports = {
         'toast-out': 'toast-out 0.2s ease-in',
         'modal-in': 'modal-in 0.2s ease-out',
         'backdrop-in': 'backdrop-in 0.2s ease-out',
+        'theme-rotate': 'theme-rotate 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+      },
+      transitionTimingFunction: {
+        'out-expo': 'cubic-bezier(0.16, 1, 0.3, 1)',
+      },
+      transitionDuration: {
+        'fast': '150ms',
+        'normal': '250ms',
+        'slow': '400ms',
       },
     },
   },

@@ -30,11 +30,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     `.replace(/\s+/g, ' ').trim();
 
     const variants = {
-      default: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:shadow',
-      outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground hover:border-accent',
-      ghost: 'hover:bg-accent hover:text-accent-foreground',
-      link: 'text-primary underline-offset-4 hover:underline',
-      destructive: 'bg-red-500 text-white hover:bg-red-600 shadow-sm hover:shadow',
+      default: 'bg-foreground text-background hover:bg-foreground/90',
+      outline: 'border border-foreground/20 bg-background hover:border-foreground/40 hover:bg-foreground/5',
+      ghost: 'hover:bg-foreground/5',
+      link: 'text-foreground underline-offset-4 hover:underline',
+      destructive: 'bg-red-500 text-white hover:bg-red-600',
     };
 
     const sizes = {

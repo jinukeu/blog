@@ -15,13 +15,13 @@ const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
 
     const animationStyles = {
       pulse: 'animate-pulse-soft',
-      shimmer: 'bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 bg-[length:200%_100%] animate-shimmer',
+      shimmer: 'bg-gradient-to-r from-foreground/10 via-foreground/5 to-foreground/10 bg-[length:200%_100%] animate-shimmer',
       none: '',
     };
 
     const baseStyles = animation === 'shimmer'
       ? ''
-      : 'bg-gray-200 dark:bg-gray-800';
+      : 'bg-foreground/10';
 
     return (
       <div
@@ -35,38 +35,34 @@ const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
 
 Skeleton.displayName = 'Skeleton';
 
-// 포스트 카드 스켈레톤
+// 포스트 카드 스켈레톤 - 그리드 레이아웃용
 function PostCardSkeleton() {
   return (
-    <div className="py-10 first:pt-0">
-      <div className="flex gap-8 items-start">
-        <div className="flex-1 min-w-0 space-y-4">
-          {/* 제목 */}
-          <Skeleton className="h-7 w-3/4" />
+    <div className="border border-border rounded-lg overflow-hidden bg-card">
+      {/* 썸네일 영역 */}
+      <Skeleton className="aspect-[16/9] w-full" variant="rounded" />
 
-          {/* 본문 2줄 */}
-          <div className="space-y-2">
-            <Skeleton className="h-5 w-full" />
-            <Skeleton className="h-5 w-5/6" />
-          </div>
+      {/* 콘텐츠 영역 */}
+      <div className="p-5 space-y-4">
+        {/* 카테고리 */}
+        <Skeleton className="h-5 w-16 rounded" />
 
-          {/* 메타 정보 */}
-          <div className="flex items-center gap-3">
-            <Skeleton className="h-4 w-16" />
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-4 w-12" />
-          </div>
-
-          {/* 태그 */}
-          <div className="flex gap-2 pt-2">
-            <Skeleton className="h-6 w-16 rounded-full" />
-            <Skeleton className="h-6 w-20 rounded-full" />
-          </div>
+        {/* 제목 */}
+        <div className="space-y-2">
+          <Skeleton className="h-5 w-full" />
+          <Skeleton className="h-5 w-3/4" />
         </div>
 
-        {/* 썸네일 */}
-        <div className="hidden sm:block">
-          <Skeleton className="w-28 h-28" variant="rounded" />
+        {/* 본문 */}
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-5/6" />
+        </div>
+
+        {/* 메타 정보 */}
+        <div className="flex items-center gap-2 pt-2">
+          <Skeleton className="h-3 w-20" />
+          <Skeleton className="h-3 w-12" />
         </div>
       </div>
     </div>

@@ -13,7 +13,7 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="w-10 h-10 rounded-lg bg-muted animate-pulse-soft" />
+      <div className="w-10 h-10 rounded-lg bg-foreground/5 animate-pulse-soft" />
     );
   }
 
@@ -22,15 +22,15 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
-      className="relative w-10 h-10 rounded-lg bg-secondary hover:bg-muted transition-colors duration-200 flex items-center justify-center group"
+      className="relative w-10 h-10 rounded-lg bg-foreground/5 hover:bg-foreground/10 transition-colors duration-200 flex items-center justify-center group btn-press"
       aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}
     >
-      {/* 태양 아이콘 */}
+      {/* 태양 아이콘 - 다크모드에서 표시 */}
       <svg
-        className={`absolute w-5 h-5 transition-all duration-300 ease-out ${
+        className={`absolute w-5 h-5 transition-all duration-300 ease-out-expo text-foreground ${
           isDark
-            ? 'opacity-100 rotate-0 scale-100 text-amber-400'
-            : 'opacity-0 -rotate-90 scale-75 text-amber-500'
+            ? 'opacity-100 rotate-0 scale-100'
+            : 'opacity-0 -rotate-90 scale-75'
         }`}
         fill="currentColor"
         viewBox="0 0 20 20"
@@ -43,12 +43,12 @@ export function ThemeToggle() {
         />
       </svg>
 
-      {/* 달 아이콘 */}
+      {/* 달 아이콘 - 라이트모드에서 표시 */}
       <svg
-        className={`absolute w-5 h-5 transition-all duration-300 ease-out ${
+        className={`absolute w-5 h-5 transition-all duration-300 ease-out-expo text-foreground ${
           isDark
-            ? 'opacity-0 rotate-90 scale-75 text-slate-700'
-            : 'opacity-100 rotate-0 scale-100 text-slate-700'
+            ? 'opacity-0 rotate-90 scale-75'
+            : 'opacity-100 rotate-0 scale-100'
         }`}
         fill="currentColor"
         viewBox="0 0 20 20"
@@ -56,9 +56,6 @@ export function ThemeToggle() {
       >
         <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
       </svg>
-
-      {/* 호버 효과 */}
-      <span className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-gradient-to-br from-amber-100/20 to-orange-100/20 dark:from-amber-400/10 dark:to-orange-400/10" />
     </button>
   );
 }

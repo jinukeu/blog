@@ -24,18 +24,18 @@ function CategoryTabs({
   className = '',
 }: CategoryTabsProps) {
   return (
-    <div className={`flex items-center gap-8 pb-5 border-b border-gray-200 dark:border-gray-700 overflow-x-auto scrollbar-hide ${className}`}>
+    <div className={`flex items-center gap-8 pb-5 border-b border-border overflow-x-auto scrollbar-hide ${className}`}>
       <button
         onClick={() => onSelect('all')}
         className={`relative whitespace-nowrap text-base pb-4 transition-all duration-200 ${
           selectedCategory === 'all'
-            ? 'text-gray-900 dark:text-white font-semibold'
-            : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+            ? 'text-foreground font-semibold'
+            : 'text-muted-foreground hover:text-foreground'
         }`}
       >
         {allLabel}
         {selectedCategory === 'all' && (
-          <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900 dark:bg-white rounded-full" />
+          <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground rounded-full" />
         )}
       </button>
       {categories.map((category) => (
@@ -44,13 +44,13 @@ function CategoryTabs({
           onClick={() => onSelect(category.id)}
           className={`relative whitespace-nowrap text-base pb-4 transition-all duration-200 ${
             selectedCategory === category.id
-              ? 'text-gray-900 dark:text-white font-semibold'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              ? 'text-foreground font-semibold'
+              : 'text-muted-foreground hover:text-foreground'
           }`}
         >
           {category.name}
           {selectedCategory === category.id && (
-            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900 dark:bg-white rounded-full" />
+            <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground rounded-full" />
           )}
         </button>
       ))}
@@ -80,8 +80,8 @@ function CategoryPills({
         onClick={() => onSelect('all')}
         className={`px-4 py-1.5 text-sm rounded-full transition-all duration-200 ${
           selectedCategory === 'all'
-            ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-sm'
-            : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+            ? 'bg-foreground text-background'
+            : 'bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground'
         }`}
       >
         {allLabel}
@@ -92,8 +92,8 @@ function CategoryPills({
           onClick={() => onSelect(category.id)}
           className={`px-4 py-1.5 text-sm rounded-full transition-all duration-200 ${
             selectedCategory === category.id
-              ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-sm'
-              : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+              ? 'bg-foreground text-background'
+              : 'bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:text-foreground'
           }`}
         >
           {category.name}
@@ -116,8 +116,8 @@ function CategoryBadge({
   className = ''
 }: CategoryBadgeProps) {
   const variants = {
-    primary: 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-semibold',
-    secondary: 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300',
+    primary: 'bg-foreground text-background font-semibold',
+    secondary: 'bg-foreground/5 text-muted-foreground',
   };
 
   return (
