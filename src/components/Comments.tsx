@@ -3,8 +3,12 @@
 import Giscus from '@giscus/react';
 import { useTheme } from 'next-themes';
 
-export default function Comments() {
-  const { theme, resolvedTheme } = useTheme();
+interface CommentsProps {
+  locale?: string;
+}
+
+export default function Comments({ locale = 'ko' }: CommentsProps) {
+  const { resolvedTheme } = useTheme();
   const giscusTheme = resolvedTheme === 'dark' ? 'dark' : 'light';
 
   return (
@@ -19,7 +23,7 @@ export default function Comments() {
         emitMetadata="0"
         inputPosition="top"
         theme={giscusTheme}
-        lang="ko"
+        lang={locale}
         loading="lazy"
       />
     </div>

@@ -1,0 +1,44 @@
+{
+  "nav": {
+    "brand": "jinukeu",
+    "draft": "Draft",
+    "github": "GitHub"
+  },
+  "hero": {
+    "title": "Jinwook's Tech Blog",
+    "subtitle": "Sharing Android development experiences and insights"
+  },
+  "posts": {
+    "empty": {
+      "filtered": "No posts in this category",
+      "filteredDescription": "Try selecting a different category.",
+      "default": "Waiting for the first post",
+      "defaultDescription": "No posts yet. Exciting content coming soon!"
+    },
+    "notFound": "Post not found"
+  },
+  "theme": {
+    "light": "Switch to light mode",
+    "dark": "Switch to dark mode"
+  },
+  "language": {
+    "label": "Select language",
+    "ko": "한국어",
+    "en": "English",
+    "ja": "日本語"
+  },
+  "footer": {
+    "backToTop": "Back to top",
+    "brand": "Jinukeu Blog",
+    "description": "Tech blog by Jinwook Lee, Android developer"
+  },
+  "author": {
+    "name": "Jinwook Lee",
+    "role": "Android Developer"
+  },
+  "meta": {
+    "siteTitle": "Jinukeu Blog",
+    "siteDescription": "Tech blog by Jinwook Lee, Android developer. Sharing experiences and insights on Kotlin, Java, and Android development.",
+    "ogDescription": "Tech blog by Jinwook Lee, Android developer"
+  }
+}

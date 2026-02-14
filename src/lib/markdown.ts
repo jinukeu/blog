@@ -7,12 +7,20 @@ import rehypeHighlight from 'rehype-highlight';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeStringify from 'rehype-stringify';
 import { BlogPost, BlogPostMeta } from '@/types/blog';
+import { Locale, defaultLocale, locales } from '@/i18n/config';
 
 const postsDirectory = path.join(process.cwd(), 'posts');
-const postImagesDirectory = path.join(process.cwd(), 'public', 'images', 'posts');
 
-export async function getPostBySlug(slug: string): Promise<BlogPost> {
-  const fullPath = path.join(postsDirectory, `${slug}.md`);
+function getPostsDir(locale: Locale = defaultLocale): string {
+  if (locale === 'ko') {
+    return postsDirectory;
+  }
+  return path.join(postsDirectory, locale);
+}
+
+export async function getPostBySlug(slug: string, locale: Locale = defaultLocale): Promise<BlogPost> {
+  const dir = getPostsDir(locale);
+  const fullPath = path.join(dir, `${slug}.md`);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
   const { data, content } = matter(fileContents);
 
@@ -40,16 +48,24 @@ export async function getPostBySlug(slug: string): Promise<BlogPost> {
     seoKeywords: data.seoKeywords,
     summary: data.summary,
     keyTakeaways: data.keyTakeaways,
+    locale,
+    availableLocales: getAvailableLocales(slug),
   };
 }
 
-export function getAllPosts(): (BlogPostMeta & { slug: string })[] {
-  const fileNames = fs.readdirSync(postsDirectory);
+export function getAllPosts(locale: Locale = defaultLocale): (BlogPostMeta & { slug: string })[] {
+  const dir = getPostsDir(locale);
+
+  if (!fs.existsSync(dir)) {
+    return [];
+  }
+
+  const fileNames = fs.readdirSync(dir);
   const allPostsData = fileNames
     .filter((fileName) => fileName.endsWith('.md'))
     .map((fileName) => {
       const slug = fileName.replace(/\.md$/, '');
-      const fullPath = path.join(postsDirectory, fileName);
+      const fullPath = path.join(dir, fileName);
       const fileContents = fs.readFileSync(fullPath, 'utf8');
       const { data } = matter(fileContents);
 
@@ -67,14 +83,17 @@ export function getAllPosts(): (BlogPostMeta & { slug: string })[] {
         seoKeywords: data.seoKeywords,
         summary: data.summary,
         keyTakeaways: data.keyTakeaways,
+        locale,
+        availableLocales: getAvailableLocales(slug),
       };
     });
 
   return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
-export function getPostContent(slug: string): { content: string; frontmatter: Record<string, unknown> } {
-  const fullPath = path.join(postsDirectory, `${slug}.md`);
+export function getPostContent(slug: string, locale: Locale = defaultLocale): { content: string; frontmatter: Record<string, unknown> } {
+  const dir = getPostsDir(locale);
+  const fullPath = path.join(dir, `${slug}.md`);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
   const { data, content } = matter(fileContents);
 
@@ -84,22 +103,45 @@ export function getPostContent(slug: string): { content: string; frontmatter: Re
   };
 }
 
-export function savePost(slug: string, content: string, frontmatter: Record<string, unknown>): void {
-  const fullPath = path.join(postsDirectory, `${slug}.md`);
+export function savePost(slug: string, content: string, frontmatter: Record<string, unknown>, locale: Locale = defaultLocale): void {
+  const dir = getPostsDir(locale);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+  const fullPath = path.join(dir, `${slug}.md`);
   const fileContent = matter.stringify(content, frontmatter);
   fs.writeFileSync(fullPath, fileContent, 'utf8');
 }
 
-export function deletePost(slug: string): void {
-  const fullPath = path.join(postsDirectory, `${slug}.md`);
+export function deletePost(slug: string, locale: Locale = defaultLocale): void {
+  const dir = getPostsDir(locale);
+  const fullPath = path.join(dir, `${slug}.md`);
   if (fs.existsSync(fullPath)) {
     fs.unlinkSync(fullPath);
   }
 }
 
-export function getAllSlugs() {
-  const fileNames = fs.readdirSync(postsDirectory);
+export function getAllSlugs(locale: Locale = defaultLocale): string[] {
+  const dir = getPostsDir(locale);
+
+  if (!fs.existsSync(dir)) {
+    return [];
+  }
+
+  const fileNames = fs.readdirSync(dir);
   return fileNames
     .filter((fileName) => fileName.endsWith('.md'))
     .map((fileName) => fileName.replace(/\.md$/, ''));
+}
+
+export function getAvailableLocales(slug: string): string[] {
+  const available: string[] = [];
+  for (const locale of locales) {
+    const dir = getPostsDir(locale);
+    const fullPath = path.join(dir, `${slug}.md`);
+    if (fs.existsSync(fullPath)) {
+      available.push(locale);
+    }
+  }
+  return available;
 }

@@ -3,7 +3,15 @@
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
-export function ThemeToggle() {
+interface ThemeToggleProps {
+  lightLabel?: string;
+  darkLabel?: string;
+}
+
+export function ThemeToggle({
+  lightLabel = 'Switch to light mode',
+  darkLabel = 'Switch to dark mode',
+}: ThemeToggleProps = {}) {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
@@ -23,9 +31,9 @@ export function ThemeToggle() {
     <button
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
       className="relative w-10 h-10 rounded-lg bg-foreground/5 hover:bg-foreground/10 transition-colors duration-200 flex items-center justify-center group btn-press"
-      aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}
+      aria-label={isDark ? lightLabel : darkLabel}
     >
-      {/* 태양 아이콘 - 다크모드에서 표시 */}
+      {/* Sun icon - shown in dark mode */}
       <svg
         className={`absolute w-5 h-5 transition-all duration-300 ease-out-expo text-foreground ${
           isDark
@@ -43,7 +51,7 @@ export function ThemeToggle() {
         />
       </svg>
 
-      {/* 달 아이콘 - 라이트모드에서 표시 */}
+      {/* Moon icon - shown in light mode */}
       <svg
         className={`absolute w-5 h-5 transition-all duration-300 ease-out-expo text-foreground ${
           isDark

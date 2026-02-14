@@ -1,6 +1,10 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 export function Footer() {
+  const t = useTranslations('footer');
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -23,15 +27,15 @@ export function Footer() {
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
             </svg>
-            맨 위로
+            {t('backToTop')}
           </span>
         </button>
 
         {/* Brand */}
         <div className="text-center mb-10">
-          <h3 className="text-xl font-bold text-foreground mb-2">Jinukeu Blog</h3>
+          <h3 className="text-xl font-bold text-foreground mb-2">{t('brand')}</h3>
           <p className="text-muted-foreground text-sm">
-            안드로이드 개발자 이진욱의 기술 블로그
+            {t('description')}
           </p>
         </div>
 

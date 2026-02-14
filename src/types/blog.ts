@@ -27,6 +27,9 @@ export interface BlogPost {
   // GEO 전용 필드
   summary?: string;
   keyTakeaways?: string[];
+  // i18n 필드
+  locale?: string;
+  availableLocales?: string[];
 }
 
 export interface BlogPostMeta {
@@ -45,6 +48,9 @@ export interface BlogPostMeta {
   // GEO 전용 필드
   summary?: string;
   keyTakeaways?: string[];
+  // i18n 필드
+  locale?: string;
+  availableLocales?: string[];
 }
 
 export interface DraftPost {

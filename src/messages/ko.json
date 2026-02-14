@@ -1,0 +1,44 @@
+{
+  "nav": {
+    "brand": "jinukeu",
+    "draft": "Draft",
+    "github": "GitHub"
+  },
+  "hero": {
+    "title": "이진욱의 기술 블로그",
+    "subtitle": "Android 개발 경험과 인사이트를 공유합니다"
+  },
+  "posts": {
+    "empty": {
+      "filtered": "해당 카테고리에 글이 없습니다",
+      "filteredDescription": "다른 카테고리를 선택해보세요.",
+      "default": "첫 번째 글을 기다리고 있어요",
+      "defaultDescription": "아직 게시된 글이 없습니다. 곧 흥미로운 콘텐츠로 채워질 예정이에요!"
+    },
+    "notFound": "포스트를 찾을 수 없습니다"
+  },
+  "theme": {
+    "light": "라이트 모드로 전환",
+    "dark": "다크 모드로 전환"
+  },
+  "language": {
+    "label": "언어 선택",
+    "ko": "한국어",
+    "en": "English",
+    "ja": "日本語"
+  },
+  "footer": {
+    "backToTop": "맨 위로",
+    "brand": "Jinukeu Blog",
+    "description": "안드로이드 개발자 이진욱의 기술 블로그"
+  },
+  "author": {
+    "name": "이진욱",
+    "role": "안드로이드 개발자"
+  },
+  "meta": {
+    "siteTitle": "Jinukeu Blog",
+    "siteDescription": "안드로이드 개발자 이진욱의 기술 블로그. Kotlin, Java, Android 개발 경험과 인사이트를 공유합니다.",
+    "ogDescription": "안드로이드 개발자 이진욱의 기술 블로그"
+  }
+}

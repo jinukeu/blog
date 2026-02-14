@@ -130,7 +130,7 @@ export default function PostsPage() {
                   </div>
                   <div className="flex items-center gap-2 ml-4">
                     <Link
-                      href={`/blog/${post.slug}`}
+                      href={`/ko/blog/${post.slug}`}
                       target="_blank"
                       className="px-4 py-2 text-sm font-medium text-neutral-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
                     >

@@ -1,17 +1,29 @@
 import { getAllPosts } from '@/lib/markdown';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { Locale, locales, defaultLocale } from '@/i18n/config';
 
-export async function GET() {
-  const posts = getAllPosts();
-  
+const langMap: Record<string, string> = {
+  ko: 'ko-KR',
+  en: 'en-US',
+  ja: 'ja-JP',
+};
+
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const localeParam = searchParams.get('locale') || defaultLocale;
+  const locale = locales.includes(localeParam as Locale) ? (localeParam as Locale) : defaultLocale;
+
+  const posts = getAllPosts(locale);
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://yourdomain.com';
+
   const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Modern Blog</title>
-    <description>현대적이고 트렌디한 개발 블로그입니다.</description>
-    <link>https://yourdomain.com</link>
-    <atom:link href="https://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <language>ko-KR</language>
+    <title>Jinukeu Blog</title>
+    <description>Tech blog by Jinwook Lee</description>
+    <link>${baseUrl}/${locale}</link>
+    <atom:link href="${baseUrl}/feed.xml?locale=${locale}" rel="self" type="application/rss+xml"/>
+    <language>${langMap[locale] || 'ko-KR'}</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     ${posts
       .map(
@@ -19,8 +31,8 @@ export async function GET() {
     <item>
       <title><![CDATA[${post.title}]]></title>
       <description><![CDATA[${post.excerpt}]]></description>
-      <link>https://yourdomain.com/blog/${post.slug}</link>
-      <guid isPermaLink="true">https://yourdomain.com/blog/${post.slug}</guid>
+      <link>${baseUrl}/${locale}/blog/${post.slug}</link>
+      <guid isPermaLink="true">${baseUrl}/${locale}/blog/${post.slug}</guid>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
       ${post.author ? `<author>${post.author}</author>` : ''}
       ${post.subCategories ? post.subCategories.map(cat => `<category>${cat}</category>`).join('') : ''}

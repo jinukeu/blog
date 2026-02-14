@@ -10,6 +10,7 @@ interface BlogPostJsonLdProps {
   image?: string;
   summary?: string;
   keyTakeaways?: string[];
+  inLanguage?: string;
 }
 
 export function BlogPostJsonLd({
@@ -22,12 +23,14 @@ export function BlogPostJsonLd({
   image,
   summary,
   keyTakeaways,
+  inLanguage = 'ko',
 }: BlogPostJsonLdProps) {
   const jsonLd: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: title,
     description: description,
+    inLanguage: inLanguage,
     author: {
       '@type': 'Person',
       name: author,
@@ -51,12 +54,12 @@ export function BlogPostJsonLd({
     },
   };
 
-  // GEO 최적화: summary 추가
+  // GEO: summary
   if (summary) {
     jsonLd.abstract = summary;
   }
 
-  // GEO 최적화: keyTakeaways 추가
+  // GEO: keyTakeaways
   if (keyTakeaways && keyTakeaways.length > 0) {
     jsonLd.keywords = keyTakeaways.join(', ');
     jsonLd.about = keyTakeaways.map((takeaway) => ({

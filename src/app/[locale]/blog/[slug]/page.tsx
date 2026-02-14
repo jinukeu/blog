@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { getPostBySlug, getAllSlugs } from '@/lib/markdown';
+import { getPostBySlug, getAllSlugs, getAvailableLocales } from '@/lib/markdown';
 import { getAllCategories } from '@/lib/category';
 import BlurredNavigation from './BlurredNavigation';
 import Comments from '@/components/Comments';
@@ -8,36 +8,56 @@ import { BlogPostJsonLd } from '@/components/JsonLd';
 import { ReadingProgress } from '@/components/ReadingProgress';
 import { TableOfContents } from '@/components/TableOfContents';
 import { Footer } from '@/components/Footer';
+import { locales, Locale } from '@/i18n/config';
+import { getTranslations } from 'next-intl/server';
 
 interface PageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; locale: string }>;
 }
 
 export async function generateStaticParams() {
-  const slugs = getAllSlugs();
-  return slugs.map((slug) => ({
-    slug: slug,
-  }));
+  const params: { locale: string; slug: string }[] = [];
+  for (const locale of locales) {
+    const slugs = getAllSlugs(locale);
+    for (const slug of slugs) {
+      params.push({ locale, slug });
+    }
+  }
+  return params;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug: rawSlug } = await params;
+  const { slug: rawSlug, locale } = await params;
   const slug = decodeURIComponent(rawSlug);
 
+  const ogLocaleMap: Record<string, string> = {
+    ko: 'ko_KR',
+    en: 'en_US',
+    ja: 'ja_JP',
+  };
+
   try {
-    const post = await getPostBySlug(slug);
+    const post = await getPostBySlug(slug, locale as Locale);
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://yourdomain.com';
-    const url = `${baseUrl}/blog/${slug}`;
+    const url = `${baseUrl}/${locale}/blog/${slug}`;
     const imageUrl = post.thumbnail ? `${baseUrl}${post.thumbnail}` : `${baseUrl}/og-default.png`;
+
+    // Build hreflang alternates
+    const availableLocales = getAvailableLocales(slug);
+    const languages: Record<string, string> = {};
+    for (const loc of availableLocales) {
+      languages[loc] = `${baseUrl}/${loc}/blog/${slug}`;
+    }
+    languages['x-default'] = `${baseUrl}/ko/blog/${slug}`;
 
     return {
       title: post.seoTitle || post.title,
       description: post.seoDescription || post.excerpt,
       keywords: post.seoKeywords || [...(post.mainCategories || []), ...(post.subCategories || [])],
-      authors: [{ name: post.author || '이진욱' }],
+      authors: [{ name: post.author || (locale === 'ko' ? '이진욱' : locale === 'ja' ? 'イ・ジヌク' : 'Jinwook Lee') }],
       openGraph: {
         type: 'article',
-        locale: 'ko_KR',
+        locale: ogLocaleMap[locale] || 'ko_KR',
         url: url,
         title: post.seoTitle || post.title,
         description: post.seoDescription || post.excerpt,
@@ -51,7 +71,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
           },
         ],
         publishedTime: post.date,
-        authors: [post.author || '이진욱'],
+        authors: [post.author || (locale === 'ko' ? '이진욱' : locale === 'ja' ? 'イ・ジヌク' : 'Jinwook Lee')],
       },
       twitter: {
         card: 'summary_large_image',
@@ -61,30 +81,40 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       },
       alternates: {
         canonical: url,
+        languages,
       },
     };
   } catch {
+    const t = await getTranslations({ locale, namespace: 'posts' });
     return {
-      title: '포스트를 찾을 수 없습니다',
+      title: t('notFound'),
     };
   }
 }
 
 export default async function BlogPost({ params }: PageProps) {
-  const { slug: rawSlug } = await params;
+  const { slug: rawSlug, locale } = await params;
   const slug = decodeURIComponent(rawSlug);
 
   let post;
   try {
-    post = await getPostBySlug(slug);
+    post = await getPostBySlug(slug, locale as Locale);
   } catch {
     notFound();
   }
 
   const { mainCategories, subCategories } = await getAllCategories();
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://yourdomain.com';
-  const url = `${baseUrl}/blog/${slug}`;
+  const url = `${baseUrl}/${locale}/blog/${slug}`;
   const imageUrl = post.thumbnail ? `${baseUrl}${post.thumbnail}` : undefined;
+
+  const t = await getTranslations({ locale, namespace: 'author' });
+
+  const dateLocaleMap: Record<string, string> = {
+    ko: 'ko-KR',
+    en: 'en-US',
+    ja: 'ja-JP',
+  };
 
   return (
     <>
@@ -92,11 +122,12 @@ export default async function BlogPost({ params }: PageProps) {
         title={post.seoTitle || post.title}
         description={post.seoDescription || post.excerpt}
         datePublished={post.date}
-        author={post.author || '이진욱'}
+        author={post.author || t('name')}
         url={url}
         image={imageUrl}
         summary={post.summary}
         keyTakeaways={post.keyTakeaways}
+        inLanguage={locale}
       />
 
       <div className="min-h-screen bg-background">
@@ -126,10 +157,10 @@ export default async function BlogPost({ params }: PageProps) {
 
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 text-base text-muted-foreground">
-                      <span>{post.author || '이진욱'}</span>
+                      <span>{post.author || t('name')}</span>
                       <span>·</span>
                       <time dateTime={post.date}>
-                        {new Date(post.date).toLocaleDateString('ko-KR', {
+                        {new Date(post.date).toLocaleDateString(dateLocaleMap[locale] || 'ko-KR', {
                           year: 'numeric',
                           month: 'long',
                           day: 'numeric'
@@ -183,13 +214,13 @@ export default async function BlogPost({ params }: PageProps) {
                   <div className="flex items-start gap-6">
                     <img
                       src="https://github.com/jinukeu.png"
-                      alt="이진욱"
+                      alt={t('name')}
                       className="w-16 h-16 rounded-full"
                     />
                     <div className="flex-1">
                       <div className="mb-4">
-                        <h3 className="text-lg font-bold text-foreground mb-2">이진욱</h3>
-                        <p className="text-muted-foreground mb-4">안드로이드 개발자</p>
+                        <h3 className="text-lg font-bold text-foreground mb-2">{t('name')}</h3>
+                        <p className="text-muted-foreground mb-4">{t('role')}</p>
                         <div className="flex items-center gap-4">
                           <a
                             href="https://github.com/jinukeu"
@@ -221,7 +252,7 @@ export default async function BlogPost({ params }: PageProps) {
               </article>
 
             {/* Comments Section */}
-            <Comments />
+            <Comments locale={locale} />
           </main>
         </div>
 

@@ -1,0 +1,44 @@
+{
+  "nav": {
+    "brand": "jinukeu",
+    "draft": "Draft",
+    "github": "GitHub"
+  },
+  "hero": {
+    "title": "イ・ジヌクの技術ブログ",
+    "subtitle": "Android開発の経験とインサイトを共有します"
+  },
+  "posts": {
+    "empty": {
+      "filtered": "該当カテゴリの記事がありません",
+      "filteredDescription": "他のカテゴリを選択してみてください。",
+      "default": "最初の記事をお待ちください",
+      "defaultDescription": "まだ公開された記事がありません。まもなく興味深いコンテンツが追加されます！"
+    },
+    "notFound": "記事が見つかりません"
+  },
+  "theme": {
+    "light": "ライトモードに切り替え",
+    "dark": "ダークモードに切り替え"
+  },
+  "language": {
+    "label": "言語選択",
+    "ko": "한국어",
+    "en": "English",
+    "ja": "日本語"
+  },
+  "footer": {
+    "backToTop": "トップへ戻る",
+    "brand": "Jinukeu Blog",
+    "description": "Androidエンジニア イ・ジヌクの技術ブログ"
+  },
+  "author": {
+    "name": "イ・ジヌク",
+    "role": "Androidエンジニア"
+  },
+  "meta": {
+    "siteTitle": "Jinukeu Blog",
+    "siteDescription": "AndroidエンジニアのKotlin、Java、Android開発の経験とインサイトを共有する技術ブログです。",
+    "ogDescription": "Androidエンジニア イ・ジヌクの技術ブログ"
+  }
+}
