@@ -51,7 +51,11 @@ export default function Home() {
       const categoriesData = await categoriesRes.json();
 
       setPosts(postsData);
-      setMainCategories(categoriesData.mainCategories || []);
+      const translatedMain = (categoriesData.mainCategories || []).map((cat: Category) => ({
+        ...cat,
+        name: t(`categories.${cat.id}` as never) || cat.name,
+      }));
+      setMainCategories(translatedMain);
       setSubCategories(categoriesData.subCategories || []);
 
       const hasRecommended = categoriesData.mainCategories?.some(
@@ -151,6 +155,7 @@ export default function Home() {
                 setSelectedMainCategory(categoryId);
                 setSelectedSubCategory('all');
               }}
+              allLabel={t('categories.all')}
             />
           </div>
 
@@ -161,6 +166,7 @@ export default function Home() {
                 categories={subCategories}
                 selectedCategory={selectedSubCategory}
                 onSelect={setSelectedSubCategory}
+                allLabel={t('categories.all')}
               />
             </div>
           )}

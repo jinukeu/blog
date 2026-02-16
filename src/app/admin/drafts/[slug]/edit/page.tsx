@@ -120,7 +120,7 @@ export default function EditDraftPage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col">
       {/* 헤더 */}
-      <header className="bg-white dark:bg-gray-900 border-b border-neutral-100 dark:border-gray-800">
+      <header className="sticky top-0 z-50 bg-white dark:bg-gray-900 border-b border-neutral-100 dark:border-gray-800">
         <div className="max-w-[1400px] mx-auto px-6">
           <div className="flex items-center justify-between h-[59px]">
             <div className="flex items-center space-x-4">
@@ -141,7 +141,7 @@ export default function EditDraftPage({ params }: PageProps) {
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="px-6 py-2 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-6 py-2 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-semibold rounded-lg hover:bg-neutral-800 dark:hover:bg-neutral-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {saving ? '저장 중...' : '저장'}
               </button>

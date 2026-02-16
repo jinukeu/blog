@@ -27,6 +27,12 @@
     "en": "English",
     "ja": "日本語"
   },
+  "categories": {
+    "all": "전체",
+    "recommended": "추천",
+    "dev": "개발",
+    "life": "회고"
+  },
   "footer": {
     "backToTop": "맨 위로",
     "brand": "Jinukeu Blog",

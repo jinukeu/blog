@@ -10,6 +10,29 @@ subCategories:
   - sub_1759713217297
 author: 이진욱
 thumbnail: /images/drafts/1762604843780-Gemini_Generated_Image_szub6pszub6pszub.png
+seoTitle: "Android 이벤트 처리 Channel vs SharedFlow 비교 - 백그라운드 이벤트 유실 해결법"
+seoDescription: "Android에서 Channel과 SharedFlow를 사용한 이벤트(사이드 이펙트) 처리의 차이점을 비교합니다. 백그라운드 이벤트 유실 문제, 다중 구독자 처리, EventFlow 구현까지 실전 예제와 함께 분석합니다."
+seoKeywords:
+  - Android
+  - Channel
+  - SharedFlow
+  - Kotlin Coroutines
+  - 이벤트 처리
+  - Side Effect
+  - EventFlow
+  - MutableSharedFlow
+  - repeatOnLifecycle
+  - ViewModel
+  - MVVM
+  - 백그라운드 이벤트
+  - Flow
+summary: "Android에서 이벤트(사이드 이펙트) 처리 시 Channel은 백그라운드 이벤트 보존이 가능하나 단일 구독자에 적합하고, SharedFlow는 다중 구독자 지원이 가능하나 백그라운드 이벤트가 유실된다. 대부분의 경우 이벤트는 한 곳에서 처리하므로 Channel이 간결하고 실용적인 선택이다."
+keyTakeaways:
+  - "Channel은 send()가 suspend되어 백그라운드 이벤트가 유실되지 않지만, 여러 구독자가 이벤트를 번갈아 수신하는 문제가 있다"
+  - "SharedFlow는 모든 구독자가 동일한 이벤트를 수신하지만, 백그라운드에서 emit된 이벤트는 유실된다"
+  - "SharedFlow의 백그라운드 유실 문제는 EventFlow(consumed 패턴)로 해결 가능하나, 다중 구독자 장점이 사라진다"
+  - "slotStore(HashMap/ArrayDeque) 패턴으로 다중 구독자 + 백그라운드 이벤트 보존을 모두 달성할 수 있다"
+  - "이벤트는 보통 한 곳에서 처리하므로, Channel이 가장 간결하고 이해하기 쉬운 선택이다"
 ---
 > 안드로이드에서 이벤트(사이드 이펙트)는 주로 channel 또는 sharedFlow를 사용해 처리한다.
 

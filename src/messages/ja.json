@@ -27,13 +27,19 @@
     "en": "English",
     "ja": "日本語"
   },
+  "categories": {
+    "all": "すべて",
+    "recommended": "おすすめ",
+    "dev": "開発",
+    "life": "振り返り"
+  },
   "footer": {
     "backToTop": "トップへ戻る",
     "brand": "Jinukeu Blog",
     "description": "Androidエンジニア イ・ジヌクの技術ブログ"
   },
   "author": {
-    "name": "イ・ジヌク",
+    "name": "Luke",
     "role": "Androidエンジニア"
   },
   "meta": {

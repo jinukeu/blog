@@ -27,13 +27,19 @@
     "en": "English",
     "ja": "日本語"
   },
+  "categories": {
+    "all": "All",
+    "recommended": "Featured",
+    "dev": "Dev",
+    "life": "Retrospective"
+  },
   "footer": {
     "backToTop": "Back to top",
     "brand": "Jinukeu Blog",
     "description": "Tech blog by Jinwook Lee, Android developer"
   },
   "author": {
-    "name": "Jinwook Lee",
+    "name": "Luke",
     "role": "Android Developer"
   },
   "meta": {
